@@ -6,7 +6,7 @@ require "jekyll"
 
 
 # Change your GitHub reponame eg. "kippt/jekyll-incorporated"
-GITHUB_REPONAME = ""
+GITHUB_REPONAME = "apeacox/apeacox.github.io"
 
 
 namespace :site do
@@ -33,3 +33,28 @@ namespace :site do
     end
   end
 end
+
+desc 'write a blog post. (Use title="An Awesome Article")'
+task :write do
+  require 'fileutils'
+
+  date      = Time.now.strftime "%Y-%m-%d"
+  title     = ENV['title']
+  permalink = title.scan(/[[:alnum:][:space:]]/i).flatten.join.downcase.gsub(' ', '-')
+
+  metadata = <<-YAML
+---
+layout: post
+
+title: "#{ title }"
+cover_image: #{ permalink }.jpg
+tags: programming
+
+excerpt: ""
+
+author:
+  name: Andrea Pavoni
+  twitter: apeacox
+  bio: Developer @ CantiereCreativo,
+  image: apavoni.png
+---
