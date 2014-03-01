@@ -58,3 +58,13 @@ author:
   bio: Developer @ CantiereCreativo,
   image: apavoni.png
 ---
+
+Text
+
+YAML
+
+  FileUtils.mkdir_p '_posts'
+  File.open("_posts/#{date}-#{ permalink }.md", 'w+') do |file|
+    file.write metadata
+  end
+end
