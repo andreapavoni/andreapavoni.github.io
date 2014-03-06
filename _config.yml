@@ -31,7 +31,8 @@ inc:
       id: 'UA-9419221-5'
 
   # Google Fonts
-  google_font: 'Droid+Sans:400,700'
+  # google_font: 'Droid+Sans:400,700'
+  google_font: 'Oswald:400,700'
 
   # Setup your fonts, colors etc at _assets/stylesheets/main.scss
 
