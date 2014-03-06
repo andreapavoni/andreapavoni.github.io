@@ -51,12 +51,6 @@ cover_image: #{ permalink }.jpg
 tags: programming
 
 excerpt: ""
-
-author:
-  name: Andrea Pavoni
-  twitter: apeacox
-  bio: Developer @ CantiereCreativo,
-  image: apavoni.png
 ---
 
 Text

@@ -105,7 +105,6 @@ redcloth:
 # jekyll-assets: see more at https://github.com/ixti/jekyll-assets
 #
 assets:
-
   dirname: assets
   baseurl: /assets/
   sources:
@@ -120,3 +119,10 @@ assets:
   cache: false
   gzip: [ text/css, application/javascript ]
   debug: false
+
+
+author:
+  name: Andrea Pavoni
+  twitter: apeacox
+  bio: "Developer @ <a href='http://cantierecreativo.net'>CantiereCreativo</a>"
+  image: apavoni.jpg
