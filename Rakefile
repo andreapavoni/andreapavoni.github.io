@@ -38,7 +38,13 @@ desc 'write a blog post. (Use title="An Awesome Article")'
 task :write do
   require 'fileutils'
 
-  date      = Time.now.strftime "%Y-%m-%d"
+  begin
+    date = Date.parse ENV['date']
+  rescue
+    date = Date.today
+  end
+
+  date = date.strftime "%Y-%m-%d"
   title     = ENV['title']
   permalink = title.scan(/[[:alnum:][:space:]]/i).flatten.join.downcase.gsub(' ', '-')
 
@@ -51,6 +57,7 @@ cover_image: #{ permalink }.jpg
 tags: programming
 
 excerpt: ""
+
 ---
 
 Text
