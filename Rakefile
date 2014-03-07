@@ -54,18 +54,21 @@ layout: post
 
 title: "#{ title }"
 cover_image: #{ permalink }.jpg
-tags: programming
+tags:
+  - programming
 
 excerpt: ""
 
 ---
 
-Text
 
 YAML
 
+  filepath="_posts/#{date}-#{ permalink }.md"
   FileUtils.mkdir_p '_posts'
-  File.open("_posts/#{date}-#{ permalink }.md", 'w+') do |file|
+  File.open(filepath, 'w+') do |file|
     file.write metadata
   end
+  exec "vim #{filepath}"
+
 end
