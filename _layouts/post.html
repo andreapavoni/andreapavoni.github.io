@@ -1,44 +1,30 @@
 ---
 layout: base
 ---
-{% if page.cover_image %}
-<div class="article-cover">
-    <div>
-        <img src="/images/{{ page.cover_image }}" class="image">
-    </div>
-</div>
-{% endif %}
-<article>
 
-    <div class="container">
-        <header>
-            <div class="meta">
-                By <address><a rel="author" href="{{ site.author.link }}" title="{{ site.author.name }}" target="_blank">{{ site.author.name }}</a> &mdash;
-                <time pubdate datetime="{{ page.date | date: "%Y-%d-%B" }}" title="{{ page.date | date: "%B %d, %Y" }}">{{ page.date | date: "%B %d, %Y" }}</time>
-            </div>
-            <h1 class="title">{{ page.title }}</h1>
-            {% if page.subtitle %}<h2 class="subtitle">{{ page.subtitle }}</h2>{% endif %}
-        </header>
+<article class="post">
+  <header>
+    <p class="meta">{{ page.date | date_to_string }}</p>
+    <h1 class="title"><a href="{{ page.url }}">{{ page.title }}</a></h2>
+  </header>
 
-        <section>
-            {{ content }}
-            {% include _social.html %}
-        </section>
+  <div class="content">
+    {% if page.external_link %}
+      <div class="external">
+        <a href="{{ page.external_link }}">{{ page.external_link }} &rarr;</a>
+      </div>
+    {% endif %}
 
-        <footer>
-            <address>
-               {% if site.author.image %}<img src="/images/{{ site.author.image }}">{% endif %}
-                <p>Written by <strong><a rel="author" href="https://twitter.com/{{ site.author.twitter }}" title="{{ site.author_name }}" target="_blank">{{ site.author.name }}</a></strong><br>
-                <span class="muted">{{ site.author.bio }}</span>
-                </p>
-            </address>
+    {{ content }}
+  </div>
 
-        </footer>
+  <footer>
+    <p class="twitter">
+      <a class="twitter-share-button" data-align="left" data-lang="en" data-related="apeacox" data-text="{{ page.title }}" data-url="{{ site.url }}{{ page.url }}" data-via="apeacox" href="https://twitter.com/share">Tweet</a>
+    </p>
+  </footer>
 
-        {% if site.inc.disqus.shortname %}
-        <section>
-            {% include _disqus.html %}
-        </section>
-        {% endif %}
-    </div>
+  <div id="disqus_thread">
+    {% include _disqus.html %}
+  </div>
 </article>

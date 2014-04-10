@@ -1,42 +1,28 @@
-inc:
-  # Blog Information
-  title:        "Andrea Pavoni"
-  subtitle:     "Passionate programmer, curious person, father"
-  cover_image:  blog-cover.jpg
-  logo:         logo.jpg
+name:      Andrea Pavoni
+url:          http://andreapavoni.com/
+facebook:     apavoni
+twitter:      apeacox
+gplus:        +AndreaPavoni
+about_link:   /about.html
 
-  # Company information
-  company:      Andrea Pavoni
-  url:          http://andreapavoni.com/
-  facebook:     apavoni
-  twitter:      apeacox
-  gplus:        +AndreaPavoni
-  about_link:   /about.html
+# Comments
+disqus:
+  shortname: apeacox
 
-  # Comments
-  disqus:
-    # Eg. "exampleblog" Set to false to disable comments
-    shortname: apeacox
+# Sharing settings
+sharing:
+  twitter:    true
+  facebook:   false
+  gplus:      true
+  hn:         false
 
-  # Sharing settings
-  sharing:
-    twitter:    true
-    facebook:   false
-    gplus:      true
-    hn:         false
+# Analytics
+analytics:
+  google:
+    id: 'UA-9419221-5'
 
- # Analytics
-  analytics:
-    google:
-      id: 'UA-9419221-5'
 
-  # Google Fonts
-  # google_font: 'Droid+Sans:400,700'
-  google_font: 'Oswald:400,700'
-
-  # Setup your fonts, colors etc at _assets/stylesheets/main.scss
-
-url:         http://andreapavoni.com
+# Jekyll stuff
 source:      .
 destination: ./_site
 plugins:     ./_plugins
@@ -119,10 +105,3 @@ assets:
   cache: false
   gzip: [ text/css, application/javascript ]
   debug: false
-
-
-author:
-  name: Andrea Pavoni
-  twitter: apeacox
-  bio: "Developer @ <a href='http://cantierecreativo.net'>CantiereCreativo</a>"
-  image: apavoni.jpg
