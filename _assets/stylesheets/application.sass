@@ -2,6 +2,7 @@
 @import reset
 @import pygments
 @import clear_sans
+@import font-awesome
 @import url('http://fonts.googleapis.com/css?family=Inconsolata:400,700')
 
 $heading-font: 'Clear Sans'
@@ -72,21 +73,39 @@ h1, h2, h3, h4, h5, h6
   .description
     margin-bottom: 1em
 
+  .contacts
+    width: 100%
+    padding: 0 auto
+    margin: 0
+
   .contacts, .contacts a
     color: $gray-color
-    font-style: italic
 
   .contacts li
     display: inline-block
+    margin-right: 0.5em
 
-    &:after
-      content: " \00b7 "
-
-    &:last-child:after
-      display: none
+    &:last-child
+      margin-right: 0
 
     a:hover
-      text-decoration: underline
+      text-decoration: none
+
+    a
+      &.fa-github
+        color: #000
+
+      &.fa-twitter
+        color: #51A5E4
+
+      &.fa-facebook
+        color: #405D9A
+
+      &.fa-linkedin
+        color: #0066A1
+
+      &.fa-google-plus
+        color: #D73D32
 
   +up-to-tablet
     padding: 5%
@@ -242,3 +261,12 @@ h1, h2, h3, h4, h5, h6
   .content
     font-size: 1em
 
+
+.pagination
+  margin-top: 2em
+
+  &.newer
+    margin-right: 1em
+
+  &.older
+    margin-left: 1em
