@@ -1,12 +1,12 @@
 @import bourbon/bourbon
 @import reset
-@import syntax
+@import pygments
+@import clear_sans
+@import url('http://fonts.googleapis.com/css?family=Inconsolata:400,700')
 
-@import url(http://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic,700italic|Montserrat:400,700)
-
-$heading-font: 'Montserrat'
-$body-font: 'Noto Serif'
-$code-font: Monaco,'Courier New','Courier',monospace
+$heading-font: 'Clear Sans'
+$body-font: 'Clear Sans'
+$code-font: 'Inconsolata','Courier New','Courier',monospace
 
 $mobile-break: 500px
 $tablet-break: 1000px
@@ -166,6 +166,7 @@ h1, h2, h3, h4, h5, h6
     code, pre
       font-family: $code-font
       font-size: 0.9em
+      font-weight: bold
 
     pre
       padding: 1em
