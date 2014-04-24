@@ -1,5 +1,5 @@
 name:      Andrea Pavoni
-url:       http://andreapavoni.com/
+url:       http://andreapavoni.com
 
 # Comments
 disqus:
@@ -100,3 +100,16 @@ assets:
   cache: false
   gzip: [ text/css, application/javascript ]
   debug: false
+
+sitemap:
+  file: "/sitemap.xml"
+  exclude:
+    - "/atom.xml"
+    - "/feed.xml"
+    - "/feed/index.xml"
+    - "/404.html"
+  include_posts:
+    - "/index.html"
+    - "blog"
+  # change_frequency_name: "change_frequency"
+  # priority_name: "priority"
