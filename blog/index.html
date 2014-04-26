@@ -1,0 +1,36 @@
+---
+layout: default
+title: Blog
+excerpt: 'Blog'
+---
+
+<section class="posts">
+  {% for post in paginator.posts %}
+    <article class="post post-excerpt">
+      <header>
+        <h3 class="title"><a href="{{ post.url }}">{{ post.title }}</a></h3>
+        <p class="meta">{{ post.date | date_to_string }}</h3>
+      </header>
+      <div class="content">
+        {% if post.excerpt %}
+            {{ post.excerpt | markdownify }}
+        {% else %}
+            {{ post.content }}
+        {% endif %}
+      </div>
+    </article>
+  {% endfor %}
+
+  <div class="pagination" style="text-align:center">
+    {% if paginator.previous_page %}
+      {% if paginator.previous_page == 1 %}
+      <a href="/" class="pagination newer">‹ Newer</a>
+      {% else %}
+      <a href="/page{{ paginator.previous_page }}" class="pagination newer">‹ Newer</a>
+      {% endif %}
+    {% endif %}
+    {% if paginator.next_page %}
+      <a href="/page{{ paginator.next_page }}" class="pagination older">Older ›</a>
+    {% endif %}
+  </div>
+</section>

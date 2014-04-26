@@ -144,6 +144,18 @@ h1, h2, h3, h4, h5, h6
         padding-left: 110px
         max-width: 910px
 
+
+.home
+  +only-desktop
+    .home-inner
+      padding: 50px
+      max-width: 1024px
+      +box-sizing(border-box)
+
+      +only-large-desktop
+        // padding-left: 110px
+        max-width: 1240px
+
 .post
   +up-to-tablet
     padding: 2.4em 5%
