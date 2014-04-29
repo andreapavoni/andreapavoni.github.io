@@ -48,7 +48,7 @@ Now, you should have all the requirements to get started.
 
 [Bundler](http://gembundler.com) is a [Ruby gem](http://guides.rubygems.org) that helps you to manage development dependencies in a project. We'll see how it works later, for now, just install it:
 
-{% highlight bash %}
+{% highlight sh %}
 gem install bundler
 {% endhighlight %}
 
@@ -58,7 +58,7 @@ We're going to use the upcoming new version of rails. At the time of writing (mi
 
 **EDIT:** rails 4.0.0 is out, so don't use rc2.
 
-{% highlight bash %}
+{% highlight sh %}
 gem install rails -v4.0.0
 {% endhighlight %}
 
@@ -70,7 +70,10 @@ Someone says that _doing it is the best way to learn_, so here's a *less common*
 
 When you install rails, it comes with a bunch of other libraries and/or command line tools. The main one is `rails`. For now, we'll use it to generate the initial skeleton:
 
-`rails new bookmarks -T -d sqlite3 -B`
+
+{% highlight sh %}
+rails new bookmarks -T -d sqlite3 -B
+{% endhighlight %}
 
 I've also passed some arguments to the command:
 
@@ -148,7 +151,7 @@ If you use *git*, this is a good moment to initialize the repo and proceed with 
 
 Even if you haven't yet wrote any line of code, you can already use the Rails development server. Run the following command:
 
-{% highlight bash %}
+{% highlight sh %}
 andrea@mbair ~/Works/12dos/bookmarks % rails server
 => Booting WEBrick
 => Rails 4.0.0 application starting in development on http://0.0.0.0:3000
@@ -176,7 +179,7 @@ This is, of course, an over-simplification, but it should be enough to get a _va
 
 The goal of our app is to manage bookmarks, right? So we create our `Bookmark` resource:
 
-{% highlight bash %}
+{% highlight sh %}
 andrea@mbair ~/Works/12dos/bookmarks % rails generate scaffold bookmark title:string url:string
     invoke    active_record
     create    db/migrate/20130614142337_create_bookmarks.rb
@@ -209,13 +212,13 @@ end
 
 Even if it's almost easy to read, this code basically means:
 
-* create a _bookmarks_ table on database (note the pluralized form)
-* it has the fields _title_ and _url_ of type string
-* also add timestmps by default (this is automatically translated to _created_at_ and _updated_at_ datetime fields)
+* create a `bookmarks` table on database (note the pluralized form)
+* it has the fields `title` and `url` of type string
+* also add timestmps by default (this is automatically translated to `created_at` and `updated_at` datetime fields)
 
 However, your database still doesn't know about these changes to the schema, you need to run the migration task:
 
-{% highlight bash %}
+{% highlight sh %}
 andrea@mbair ~/Works/12dos/bookmarks % rake db:migrate
 ==  CreateBookmarks: migrating ================================================
 -- create_table(:bookmarks)
@@ -225,7 +228,7 @@ andrea@mbair ~/Works/12dos/bookmarks % rake db:migrate
 
 [Rake](http://rake.rubyforge.org) is another common and useful tool in the Ruby world. It acts like a *Makefile* in a Ruby fashion. Rails comes with several *rake* tasks ready to use (you can also create custom ones, if needed):
 
-{% highlight bash %}
+{% highlight sh %}
 andrea@mbair ~/Works/12dos/bookmarks % rake -T
 rake about                  # List versions of all Rails frameworks and the environment
 rake assets:clean           # Remove old compiled assets
@@ -238,20 +241,20 @@ rake assets:environment     # Load asset compile environment
 
 The model representing a *bookmark* was created in `app/models/bookmark.rb`, at the moment it's almost empty in terms of code, but it already knows how to behave with the database. To demonstrate this, we'll use another Rails command to open a *console*:
 
-{% highlight bash %}
+{% highlight sh %}
 andrea@mbair ~/Works/12dos/bookmarks % rails console
 Loading development environment (Rails 4.0.0)
 >
 {% endhighlight %}
 
-Now, we have a bash to manually issue commands to our rails app. Let's see if it knows something about our *Bookmark*:
+Now, we have a shell to manually issue commands to our rails app. Let's see if it knows something about our *Bookmark*:
 
 {% highlight ruby %}
 > Bookmark
 => Bookmark(id: integer, title: string, url: string, created_at: datetime, updated_at: datetime)
 
 > Bookmark.count
-   (0.3ms)  SELECT COUNT(*) FROM "bookmarks"
+     (0.3ms)  SELECT COUNT(*) FROM "bookmarks"
 => 0
 {% endhighlight %}
 
@@ -262,10 +265,10 @@ It knows about the *bookmarks* table, its fields and how to query the database. 
    (0.1ms)  begin transaction
   SQL (7.7ms)  INSERT INTO "bookmarks" ("created_at", "title", "updated_at", "url") VALUES (?, ?, ?, ?)  [["created_at", Fri, 14 Jun 2013 15:16:17 UTC +00:00], ["title", "Hello Bookmarks app!"], ["updated_at", Fri, 14 Jun 2013 15:16:17 UTC +00:00], ["url", "http://localhost:3000"]]
    (0.8ms)  commit transaction
-=> #<Bookmark id: 1, title: "Hello Bookmarks app!", url: "http://localhost:3000", created_at: "2013-06-14 15:16:17", updated_at: "2013-06-14 15:16:17
+=> #<Bookmark id: 1, title: "Hello Bookmarks app!", url: "http://localhost:3000", created_at: "2013-06-14 15:16:17", updated_at: "2013-06-14 15:16:17"
 
 > Bookmark.count
-   (0.3ms)  SELECT COUNT(*) FROM "bookmarks"
+     (0.3ms)  SELECT COUNT(*) FROM "bookmarks"
 => 1
 {% endhighlight %}
 
@@ -283,7 +286,7 @@ The autogenerated code is quite clear and, for brevity reasons, I can't dive too
 
 The final component for the *MVC* stack is about routing the *HTTP* requests to the proper controller and action. To make this, the Rails generator has updated `config/routes.rb` file and has added the line `resources :bookmarks` that is a shorthand to say: *use [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer) routes for the the resource bookmark*. If you're wondering *what* routes, you can use the relative _rake task_:
 
-{% highlight bash %}
+{% highlight sh %}
 andrea@mbair ~/Works/12dos/bookmarks % rake routes
        Prefix Verb   URI Pattern                   Controller#Action
     bookmarks GET    /bookmarks(.:format)          bookmarks#index
@@ -320,7 +323,7 @@ We also told Bundler to use a version of Devise that should be *greater_or_equal
 
 Run `bundle install` to install the gem:
 
-{% highlight bash %}
+{% highlight sh %}
 andrea@mbair ~/Works/12dos/bookmarks % bundle install
 Resolving dependencies...
 Using rake (10.0.4)
@@ -334,7 +337,7 @@ andrea@mbair ~/Works/12dos/bookmarks %
 
 and run the Devise generator:
 
-{% highlight bash %}
+{% highlight sh %}
 andrea@mbair ~/Works/12dos/bookmarks % rails generate devise:install
       create  config/initializers/devise.rb
       create  config/locales/devise.en.yml
@@ -404,7 +407,7 @@ end
 
 Setup for Devise is done, but we still haven't a _User_ model, we need to create one:
 
-{% highlight bash %}
+{% highlight sh %}
 andrea@mbair ~/Works/12dos/bookmarks % rails generate devise User
       invoke    active_record
       create    db/migrate/20130617132545_devise_create_users.rb
@@ -553,7 +556,7 @@ Our app is almost complete, or at leats, it lacks several little details that ma
 
 This is a simple task. All we need is a new route, controller and view. This time, we'll use a generator dedicated to the controller:
 
-{% highlight bash %}
+{% highlight sh %}
 rails generate controller site index
 {% endhighlight %}
 
@@ -616,7 +619,7 @@ gem 'zurb-foundation', '~> 4.2.2'
 
 run `bundle install`, plus its install generator:
 
-{% highlight bash %}
+{% highlight sh %}
 rails generate foundation:install
 {% endhighlight %}
 
@@ -624,7 +627,7 @@ this command, will ask you to overwrite your default application layout in `app/
 
 Moreover, we can also remove old scaffold's stylesheets:
 
-{% highlight bash %}
+{% highlight sh %}
 rm app/assets/stylesheets/scaffolds.css.scss
 {% endhighlight %}
 
@@ -638,13 +641,13 @@ gem 'simple_form', '~> 3.0.0.rc'
 
 run `bundle install` and the install generator (note that it already supports Foundation's markup structure):
 
-{% highlight bash %}
+{% highlight sh %}
 rails generate simple_form:install --foundation
 {% endhighlight %}
 
 We'll also re-generate _Devise_ views, because it supports *SimpleForm*:
 
-{% highlight bash %}
+{% highlight sh %}
 rails generate devise:views
 {% endhighlight %}
 
