@@ -42,6 +42,11 @@ port:        4000
 baseurl:     /
 lsi:         false
 
+
+gems:
+  - jekyll-assets
+  - jekyll-sitemap
+
 maruku:
   use_tex:    false
   use_divs:   false
@@ -92,19 +97,3 @@ assets:
   cache: false
   gzip: [ text/css, application/javascript ]
   debug: false
-
-#
-# Sitemap generator
-#
-sitemap:
-  file: "/sitemap.xml"
-  exclude:
-    - "/atom.xml"
-    - "/feed.xml"
-    - "/feed/index.xml"
-    - "/404.html"
-  include_posts:
-    - "/index.html"
-    - "blog"
-  # change_frequency_name: "change_frequency"
-  # priority_name: "priority"
