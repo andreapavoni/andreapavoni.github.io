@@ -185,21 +185,22 @@ h1, h2, h3, h4, h5, h6 {
       }
     }
 
-    .wrapper-footer {
-      padding: 50px 50px 0 50px;
-      margin-bottom: 0.5em;
+  }
 
-      max-width: 810px;
-      @include box-sizing(border-box);
-      @include only-large-desktop {
-        padding-left: 110px;
-        max-width: 910px;
-      }
+  .wrapper-footer {
+    padding: 50px 50px 0 50px;
+    margin-bottom: 0.5em;
 
-      p {
-        text-align: center;
-        font-size: 0.8em;
-      }
+    max-width: 810px;
+    @include box-sizing(border-box);
+    @include only-large-desktop {
+      padding-left: 110px;
+      max-width: 910px;
+    }
+
+    p {
+      text-align: center;
+      font-size: 0.8em;
     }
   }
 }
@@ -346,4 +347,16 @@ h1, h2, h3, h4, h5, h6 {
   &.older {
     margin-left: 1em;
   }
+}
+
+.not-found {
+  margin-top: 5em;
+  padding: 10px;
+
+  h1 {
+    font-size: 40px;
+  }
+
+  font-size: 25px;
+  line-height: 2em;
 }
