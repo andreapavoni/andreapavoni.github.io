@@ -124,6 +124,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 30%;
     border-right: 1px solid $border-color;
     > .inner {
+      text-align: right;
       position: absolute;
       top: 30%;
       right: 0;
@@ -181,6 +182,23 @@ h1, h2, h3, h4, h5, h6 {
       @include only-large-desktop {
         padding-left: 110px;
         max-width: 910px;
+      }
+    }
+
+    .wrapper-footer {
+      padding: 50px 50px 0 50px;
+      margin-bottom: 0.5em;
+
+      max-width: 810px;
+      @include box-sizing(border-box);
+      @include only-large-desktop {
+        padding-left: 110px;
+        max-width: 910px;
+      }
+
+      p {
+        text-align: center;
+        font-size: 0.8em;
       }
     }
   }
