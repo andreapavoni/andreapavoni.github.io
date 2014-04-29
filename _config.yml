@@ -25,7 +25,7 @@ limit_posts: 0
 pygments:    true
 
 relative_permalinks: false
-permalink:     '/blog/:year/:month/:title'
+permalink:     '/blog/:year/:i_month/:title'
 
 paginate_path: '/blog/page/:num'
 paginate: 5
