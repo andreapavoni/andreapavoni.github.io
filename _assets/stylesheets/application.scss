@@ -15,6 +15,7 @@ $tablet-break: 1000px;
 $desktop-break: 1666px;
 
 $black-color: #333332;
+$red-color: #d82d22; // #C92A20;
 $gray-color: #666665;
 $light-gray-color: #b3b3b1;
 $ultra-light-gray-color: #f2f2f0;
@@ -65,7 +66,7 @@ body {
 }
 
 a {
-  color: $black-color;
+  color: $red-color;
   text-decoration: underline;
 
   &.fa {
@@ -78,7 +79,7 @@ a {
 
 
   &.fa-github {
-    color: black;
+    color: $black-color;
   }
 
   &.fa-twitter, > .fa-twitter-square {
@@ -210,6 +211,7 @@ h1, h2, h3, h4, h5, h6 {
     .title {
       font-size: 2.5em;
       a {
+        color: $black-color;
         text-decoration: none;
       }
     }
