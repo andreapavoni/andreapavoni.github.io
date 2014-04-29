@@ -4,10 +4,7 @@ require "tmpdir"
 require "bundler/setup"
 require "jekyll"
 
-
-# Change your GitHub reponame eg. "kippt/jekyll-incorporated"
 GITHUB_REPONAME = "apeacox/apeacox.github.io"
-
 
 namespace :site do
   desc "Generate blog files"
