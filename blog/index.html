@@ -24,13 +24,13 @@ excerpt: 'Blog'
   <div class="pagination" style="text-align:center">
     {% if paginator.previous_page %}
       {% if paginator.previous_page == 1 %}
-      <a href="/" class="pagination newer">‹ Newer</a>
+      <a href="/blog" class="pagination newer">‹ Newer</a>
       {% else %}
-      <a href="/page{{ paginator.previous_page }}" class="pagination newer">‹ Newer</a>
+      <a href="/blog/page/{{ paginator.previous_page }}" class="pagination newer">‹ Newer</a>
       {% endif %}
     {% endif %}
     {% if paginator.next_page %}
-      <a href="/page{{ paginator.next_page }}" class="pagination older">Older ›</a>
+      <a href="/blog/page/{{ paginator.next_page }}" class="pagination older">Older ›</a>
     {% endif %}
   </div>
 </section>

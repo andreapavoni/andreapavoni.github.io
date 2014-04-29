@@ -5,13 +5,6 @@ url:       http://andreapavoni.com
 disqus:
   shortname: apeacox
 
-# Sharing settings
-sharing:
-  twitter:    true
-  facebook:   false
-  gplus:      true
-  hn:         false
-
 # Analytics
 analytics:
   google:
@@ -26,15 +19,14 @@ include:     ['.htaccess']
 exclude:     ['Rakefile', 'Gemfile', 'Gemfile.lock']
 timezone:    nil
 
-# Show future posts
 future:      false
 show_drafts: nil
 limit_posts: 0
 pygments:    true
 
-relative_permalinks: true
-
+relative_permalinks: false
 permalink:     '/blog/:year/:month/:title'
+
 paginate_path: '/blog/page/:num'
 paginate: 5
 
@@ -101,6 +93,9 @@ assets:
   gzip: [ text/css, application/javascript ]
   debug: false
 
+#
+# Sitemap generator
+#
 sitemap:
   file: "/sitemap.xml"
   exclude:
