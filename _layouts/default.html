@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>{{ page.title }} - Andrea Pavoni</title>
+
     <meta charset=utf-8">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>{{ page.title }} - Andrea Pavoni</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% stylesheet application %}
+    <link rel="canonical" href="{{ page.url }}" />
+
     <meta content="Andrea Pavoni" name="author">
     <meta content="en" name="language">
     <meta name="description" content="{{ page.excerpt }}"/>
+
+    <meta property="og:title" content="{{ page.title }} - Andrea Pavoni" />
+    <meta property="og:url" content="{{ page.url }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png" />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:site" content="@apeacox" />
+    <meta property="twitter:title" content="{{ page.title }} - Andrea Pavoni" />
+    <meta property="twitter:description" content="{{ page.excerpt }}" />
+    <meta property="twitter:image" content="http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png" />
+    <meta property="twitter:url" content="{{ page.url }}" />
+
   </head>
   <body>
     <aside class="cover">
