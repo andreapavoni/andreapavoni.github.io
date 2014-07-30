@@ -304,7 +304,7 @@ edit_bookmark GET    /bookmarks/:id/edit(.:format) bookmarks#edit
 
 Now, the fun part. Restart your rails server with `rails server` and go to [http://localhost:3000/bookmarks](http://localhost:3000/bookmarks). If you followed the above example in console, you should already see the Bookmark created earlier, otherwise, you can create a new one by clicking on _New bookmark_ link.
 
-Try [http://localhost:3000/bookmarks.json](http://localhost:3000/bookmarks.json) and see what you'll get. You still haven't wrote a single line of Ruby, and it already does a lot of things. Awesome, isn't it? :-)
+Try [http://localhost:3000/bookmarks.json](http://localhost:3000/bookmarks.json) and see what you'll get. You still haven't written a single line of Ruby, and it already does a lot of things. Awesome, isn't it? :-)
 
 
 ## Adding users and authentication
