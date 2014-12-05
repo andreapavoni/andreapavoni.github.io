@@ -22,7 +22,7 @@ timezone:    nil
 future:      false
 show_drafts: nil
 limit_posts: 0
-pygments:    true
+highlighter: pygments
 
 relative_permalinks: false
 permalink:     '/blog/:year/:i_month/:title'
@@ -30,7 +30,7 @@ permalink:     '/blog/:year/:i_month/:title'
 paginate_path: '/blog/page/:num'
 paginate: 5
 
-markdown:      maruku
+markdown:      kramdown
 markdown_ext:  markdown,mkd,mkdn,md
 textile_ext:   textile
 
