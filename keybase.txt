@@ -1,0 +1,77 @@
+==================================================================
+https://keybase.io/andreapavoni
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://andreapavoni.com
+  * I am andreapavoni (https://keybase.io/andreapavoni) on keybase.
+  * I have a public key with fingerprint 15C2 22EB 70D4 9D43 590F  DFF6 F380 C6BA 450C B260
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "15c222eb70d49d43590fdff6f380c6ba450cb260",
+            "host": "keybase.io",
+            "key_id": "f380c6ba450cb260",
+            "uid": "9a588fa8afb39d29e3e0953635348c00",
+            "username": "andreapavoni"
+        },
+        "revoke": {
+            "sig_ids": [
+                "26da83ec1da3934ac2666203d12e7a921692f3211fee3e4668f7540a465534200f"
+            ]
+        },
+        "service": {
+            "hostname": "andreapavoni.com",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1418113876,
+    "expire_in": 157680000,
+    "prev": "b901be5a35e31e713aec0fe411abc745d21cc306cbc9e5ae89720964636dbce0",
+    "seqno": 6,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v1.1.6
+Comment: https://keybase.io/crypto
+
+yMNCAnicbVJ9TFVlHL5XPgLShJmSCeROBjIQzvfHXaZhgbRodvOKCHI95z3vufeE
+nHM9916IT4UpA01c4GhYCQyyFigzEozhuBCRToYVViBikxXyFVtjsQTMzmX1n+8/
+797f7/k9z/M++/Wt8TEEGeeP9Xe+vvrLQ8abPRa3YW9Z294CRFDFPMRUgGTBlUuS
+FRvUHJqsuBATglEAx3EoMKhIciJJUBwqiZJESwSLAlrgSQoFAk6jSCxiV53eCZ1G
+4J0wTlb1mv6wyqJefQLevdLgeIplJZ7lJYHgRJyDBEQ5iqAJiiBZgK4AnVBT+Gyo
+o3lF1CDv4HNURUaKYhEN5qhZ0GvbKdt0JSdiSkdwWuRZAgJM5AmOIHmA0zSNo4SI
+4ZDhORyjOVwicAyToK5G0jQrMRSJ8iRN6aI4ikrIQZ1bV82RwQq592tPcBAH1Gzd
+n0NTXSpQD+tdu8vlMHmNufIcXnQuFKz/8VgFWRH1bPWBHKg5ZVVBTJiOBC7ZS4yR
+GIthBMvQsQh8zyFr0Cp7ERRDs6h+vDIwR6cUOBQTIMUTFCQwyGAEDwEqQRLDeAEw
+JCXiGAAESgMBcDoMshyDoxxN0gQtCgB6A3XCI4qKmHQlF2/TKfXsFN7l1iBS1NuT
+4WswBhn8/VZ5t8MQFBj8/87MDa59aPRoV4yegdOeenNMe6bahW/95+TkyGt9Hs18
+HKQkVDaYK7dtzGsujppuiqn+6EWwxX4tLTEsZDncZB9e2BZbuJhcEx8xcC+9YNdv
+LUNVzV8NJfcHzm/o/ibL9bjCyvuUpmS+2egu3PzKqePnI96eTm/ZDLob77wRHfog
+/oP60Kqy+1OyLfgwu3Vj5fN19uDIzPmwR3faPU3RQdPN3/u3jGdeNwSU/fDd8v7m
+8B0Xr8ydi9AaXr60ULTk/luyp81UH2WrLbcnflm3qfU2uDq7fCLzQlTMeOn5kZra
+/rHO7tbC3Ejb4NnEmfELaaDYGZZX+mx2fEXruZsTu8jsocUz197tKvlzeMYv2jZ0
+z79aMZSYzSFr/wqRHy40Xspnut7vyLC07I/yOV1YlXLS+Dhj6pZ5cs1bO48s3p1P
+6l5FKEt7XMu9+1665Zz9NmbL7sHyfYWYumFn0PWeRw2vJn185v7nAf4R27Fx0Z3x
+IfNpArH+0NejPk3Hitsub3LMZA+uO8t8ctWzMDlSHhIyyT74ec+PGSX5BxJ85zq+
+uLF+irb4d6TWJzVU9D6X27/EHJ0qKH0aOXBxIvFy++LxFxKeqeucuTu2OyA6a7Z0
+NLXPN7f8xEFLW2r56sHPDFZh7Kn8onc6pwI1P7K1trzn959sHLm9tjXujx35o/2V
+pyLrpsO10IHhEcuvyTdq/gUOOLT5
+=sKQh
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/andreapavoni
+
+==================================================================
