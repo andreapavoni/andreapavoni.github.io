@@ -223,6 +223,20 @@ h1, h2, h3, h4, h5, h6 {
       text-align: center;
       font-size: 0.8em;
     }
+
+    .heartbeat {
+      vertical-align: middle;
+      margin: 3px;
+      display: inline-block;
+      color: $red-color;
+    }
+
+    &:hover {
+      .heartbeat {
+        font-size: 28px;
+        vertical-align: -5px;
+      }
+    }
   }
 }
 
