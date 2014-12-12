@@ -15,7 +15,7 @@ $tablet-break: 1000px;
 $desktop-break: 1666px;
 
 $black-color: #333332;
-$red-color: #8f1e16; //#d82d22; // #C92A20;
+$red-color: #b83130;
 $gray-color: #666665;
 $light-gray-color: #b3b3b1;
 $ultra-light-gray-color: #f2f2f0;
@@ -108,8 +108,30 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+  background: url(http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png?s=150) no-repeat;
+  margin-bottom: 1em;
+  margin-left: 0.7em;
+  float: right;
+  position: relative;
+  right: 0;
+  box-shadow: 0 0 1px rgba(0, 0, 0, .4);
+  -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .4);
+  -moz-box-shadow: 0 0 1px rgba(0, 0, 0, .4);
+
+  img {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+}
+
 .cover {
-  text-align: center;
+  text-align: right;
   @include up-to-tablet {
     padding: 5%;
   }
@@ -150,10 +172,9 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   padding: 0 auto;
   margin: 0;
-}
-.contacts {
   color: $gray-color;
 }
+
 .contacts li {
   display: inline-block;
   margin-right: 0.5em;
