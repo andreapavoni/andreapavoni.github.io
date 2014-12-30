@@ -15,7 +15,7 @@ $tablet-break: 1000px;
 $desktop-break: 1666px;
 
 $black-color: #333332;
-$red-color: #b83130;
+$red-color: #9c042a; //#b83130;
 $gray-color: #666665;
 $light-gray-color: #b3b3b1;
 $ultra-light-gray-color: #f2f2f0;
@@ -54,7 +54,7 @@ $border-color: #dededc;
 body {
   font-family: $body-font;
   color: $black-color;
-  background-color: white;
+  background-color: #F5F4F4;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   font-size: 1em;
