@@ -6,7 +6,7 @@ cover_image: hello-go-lang.jpg
 tags:
   - programming
   - golang
-  - rendis
+  - redis
 
 excerpt: "During the last months, I was looking for a new programming language to learn for *fun and profit*. I picked [Go lang](http://golang.org), then I tried to build something enough complete and/or useful, to see how it feels to program in Go with an everyday task. Here's how it went."
 
