@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create recursive OpenStruct from a Ruby Hash - Andrea Pavoni</title>
+
+    <meta charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/application.css">
+    <link rel="canonical" href="http://andreapavoni.com/blog/2013/4/create-recursive-openstruct-from-a-ruby-hash" />
+
+    <meta name="google-site-verification" content="4kYa-0E2vIOPdWtJsz0BISFUuNoswW-SyiDRvezrXmQ" />
+
+    <meta name="author" content="Andrea Pavoni">
+    <meta name="language" content="en">
+    <meta name="description" content="Maybe you already know and used the Ruby's [OpenStruct](http://www.ruby-doc.org/stdlib-2.0/libdoc/ostruct/rdoc/OpenStruct.html) class. I've played a bit with it to create a very easy to use configuration system for Ruby apps."/>
+    <meta name="keywords" content="andrea,pavoni,andrea pavoni,programmer,developer,rome,italy,ruby,javascript,go,golang,redis,oop,tdd,bdd,unix,open source,node,nodejs" />
+
+    <meta property="fb:admins" content="1309293135" />
+    <meta property="og:title" content="Create recursive OpenStruct from a Ruby Hash - Andrea Pavoni" />
+    <meta property="og:url" content="http://andreapavoni.com/blog/2013/4/create-recursive-openstruct-from-a-ruby-hash" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png" />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:site" content="@apeacox" />
+    <meta property="twitter:title" content="Create recursive OpenStruct from a Ruby Hash - Andrea Pavoni" />
+    <meta property="twitter:description" content="Maybe you already know and used the Ruby's [OpenStruct](http://www.ruby-doc.org/stdlib-2.0/libdoc/ostruct/rdoc/OpenStruct.html) class. I've played a bit with it to create a very easy to use configuration system for Ruby apps." />
+    <meta property="twitter:image" content="http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png" />
+    <meta property="twitter:url" content="http://andreapavoni.com/blog/2013/4/create-recursive-openstruct-from-a-ruby-hash" />
+
+  </head>
+  <body>
+    <aside class="cover">
+      <div class="inner">
+        <div class="avatar">
+          <img src='http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png?s=150' alt='Andrea Pavoni image' />
+        </div>
+        <h1 class="title"><a href="http://andreapavoni.com">Andrea Pavoni</a></h1>
+        <p class="description">
+          Passionate programmer. *nix user since 1999. Husband/Father. Teacher.
+        </p>
+        <p class="description">Developer</p>
+        <ul class="contacts">
+          <li><a href="http://github.com/apeacox/" class="fa fa-github fa-lg" title="github"></a></li>
+          <li><a href="http://twitter.com/apeacox/" class="fa fa-twitter fa-lg" title="twitter"></a></li>
+          <li><a href="http://it.linkedin.com/in/andreapavoni/" class="fa fa-linkedin fa-lg" title="LinkedIn"></a></li>
+          <li><a href="https://plus.google.com/+AndreaPavoni?rel=author" class="fa fa-google-plus fa-lg" title="Google+"></a></li>
+          <li><a href="http://www.facebook.com/apavoni" class="fa fa-facebook fa-lg" title="facebook"></a></li>
+          <li><a href="http://instagram.com/apavoni" class="fa fa-instagram fa-lg" title="instagram"></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section class="wrapper">
+      <div class="wrapper-inner">
+        <article class="post">
+  <header>
+    <p class="meta">24 Apr 2013</p>
+    <h1 class="title"><a href="/blog/2013/4/create-recursive-openstruct-from-a-ruby-hash">Create recursive OpenStruct from a Ruby Hash</a></h2>
+  </header>
+
+  <div class="content">
+    
+
+    <p>When I develop some ruby app, mostly rails ones, I need to manage several configuration variables (eg: API keys) and I like to store them in a unique place. So I usually end up with something like this:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># config/initializers/_load_config.rb</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="si">}</span><span class="s2">/config/config.yml&quot;</span><span class="p">)</span>
+
+<span class="no">APP_CONF</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">HashWithIndifferentAccess</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+  <span class="no">YAML</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="no">ERB</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span><span class="o">[</span><span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">]</span>
+<span class="p">)</span></code></pre></div>
+
+<p>It does a good job:</p>
+
+<ul>
+  <li>it first compiles eventual ERB tags (so you can store values in <code>ENV</code>)</li>
+  <li>then it loads YAML</li>
+  <li>finally initializes a <a href="http://apidock.com/rails/v3.2.13/ActiveSupport/HashWithIndifferentAccess/new/class">HashWithIndifferentAccess</a>, so I can lookup keys with either a String or a Symbol</li>
+</ul>
+
+<p>The last point is a <em>plus</em>, kindly offered by Rails’ ActiveSupport library, I prefer Symbol over String for Hash keys.</p>
+
+<h2 id="the-problem">The problem</h2>
+
+<p>However, I knew that there’s a smarter way to achieve same goal, even with some more adavantages. I started from <a href="http://www.ruby-doc.org/stdlib-2.0/libdoc/ostruct/rdoc/OpenStruct.html">OpenStruct</a>:</p>
+
+<ul>
+  <li>it solves the problem of Hash key lookup by providing them as methods, for example:</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;ostruct&#39;</span>
+
+<span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span><span class="ss">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="ss">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="n">mystruct</span> <span class="o">=</span> <span class="no">OpenStruct</span><span class="o">.</span><span class="n">new</span> <span class="nb">hash</span>
+<span class="n">mystruct</span><span class="o">.</span><span class="n">a</span> <span class="c1"># =&gt; 1</span>
+<span class="n">mystruct</span><span class="o">.</span><span class="n">b</span> <span class="c1"># =&gt; 2</span></code></pre></div>
+
+<ul>
+  <li>it’s part of the Ruby’s standard library (along with YAML and ERB as well)</li>
+  <li>it’s very simple to hack ;-)</li>
+</ul>
+
+<p>Looks excellent, right? Well, it’s not <em>perfect</em>, because it doesn’t handle nested hashes, in other words, here’s what happen when you pass an Hash that has other hashes as values:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;ostruct&#39;</span>
+
+<span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span><span class="ss">a</span><span class="p">:</span> <span class="p">{</span><span class="ss">b</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
+<span class="n">mystruct</span> <span class="o">=</span> <span class="no">OpenStruct</span><span class="o">.</span><span class="n">new</span> <span class="nb">hash</span>
+<span class="n">mystruct</span><span class="o">.</span><span class="n">a</span> <span class="c1"># =&gt; {b: 1}</span>
+<span class="n">mystruct</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">b</span> <span class="c1"># =&gt; NoMethodError: undefined method &#39;b&#39; for {:b=&gt;1}:Hash</span></code></pre></div>
+
+<p>Moreover, there’s no way to access the original hash (well, there’s one but that’s another point), it might be useful when you need to pass an entire Hash.</p>
+
+<h2 id="a-solution">A solution</h2>
+
+<p><code>OpenStruct</code> already does a great part fo the <em>dirty job</em>, it only needs some change to get what we need. I called it, <code>DeepStruct</code>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># deep_struct.rb</span>
+<span class="nb">require</span> <span class="s1">&#39;ostruct&#39;</span>
+
+<span class="k">class</span> <span class="nc">DeepStruct</span> <span class="o">&lt;</span> <span class="no">OpenStruct</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">hash</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+    <span class="vi">@table</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="vi">@hash_table</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="nb">hash</span>
+      <span class="nb">hash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
+        <span class="vi">@table</span><span class="o">[</span><span class="n">k</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="no">Hash</span><span class="p">)</span> <span class="p">?</span> <span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">:</span> <span class="n">v</span><span class="p">)</span>
+        <span class="vi">@hash_table</span><span class="o">[</span><span class="n">k</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="n">new_ostruct_member</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">to_h</span>
+    <span class="vi">@hash_table</span>
+  <span class="k">end</span>
+
+<span class="k">end</span></code></pre></div>
+
+<p>There’s not too much to explain here, I’ve overridden <a href="http://www.ruby-doc.org/stdlib-2.0/libdoc/ostruct/rdoc/OpenStruct.html#method-c-new">OpenStruct#new</a> method to make two basic things:</p>
+
+<ul>
+  <li>Iterate the key/values of the passed Hash, then:
+    <ul>
+      <li>initialize a new <code>DeepStruct</code> if a given value is an Hash</li>
+      <li>store original key/values in @hash_table, so I can retrieve it with <code>#to_h</code> method</li>
+    </ul>
+  </li>
+</ul>
+
+<p>That’s all we need, here’s an example:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;deep_struct&#39;</span>
+
+<span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span><span class="ss">a</span><span class="p">:</span> <span class="p">{</span><span class="ss">b</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
+<span class="n">mystruct</span> <span class="o">=</span> <span class="no">DeepStruct</span><span class="o">.</span><span class="n">new</span> <span class="nb">hash</span>
+<span class="n">mystruct</span><span class="o">.</span><span class="n">a</span> <span class="c1"># =&gt; #&lt;DeepStruct b=1&gt;</span>
+<span class="n">mystruct</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">b</span> <span class="c1"># =&gt; 1</span>
+<span class="n">mystruct</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">to_h</span> <span class="c1"># =&gt; {b: 1}</span></code></pre></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I’ve said I’d mainly use this to store configs for my apps, so go back to the initial example:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># config/initializers/_load_config.rb</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="si">}</span><span class="s2">/config/config.yml&quot;</span><span class="p">)</span>
+
+<span class="no">APP_CONF</span> <span class="o">=</span> <span class="no">DeepStruct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">YAML</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="no">ERB</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span><span class="o">[</span><span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">]</span><span class="p">)</span></code></pre></div>
+
+<p>Enjoy and/or leave a comment :-)</p>
+
+  </div>
+
+  <footer>
+    <h3 class='title'>Enjoyed this article? Share it!</h3>
+
+    <!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+      <a class="addthis_button_twitter"><i class='fa fa-twitter-square fa-2x'></i></a>
+      <a class="addthis_button_linkedin"><i class='fa fa-linkedin-square fa-2x'></i></a>
+      <a class="addthis_button_google_plusone_share"><i class='fa fa-google-plus-square fa-2x'></i></a>
+      <a class="addthis_button_facebook"><i class='fa fa-facebook-square fa-2x'></i></a>
+    </div>
+    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5359113314750bd5"></script>
+    <!-- AddThis Button END -->
+  </footer>
+
+  <div id="disqus_thread">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'apeacox';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+
+  </div>
+</article>
+
+      </div>
+
+      <footer class="wrapper-footer">
+        <p>made with <span class='heartbeat'>♥</span> by <a href='http://andreapavoni.com'>Andrea Pavoni</a> &copy;2010 - 2016
+          <a href="//www.iubenda.com/privacy-policy/207223" class="iubenda-white iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+          <script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src = "//cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
+        </p>
+      </footer>
+    </section>
+
+    <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9419221-5']);
+  _gaq.push(['_trackPageview']);
+  _gaq.push (['_gat._anonymizeIp']);
+
+  (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+   })();
+</script>
+
+  </body>
+</html>

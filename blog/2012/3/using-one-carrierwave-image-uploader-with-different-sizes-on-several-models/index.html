@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Using one carrierwave image uploader with different sizes on several models - Andrea Pavoni</title>
+
+    <meta charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/application.css">
+    <link rel="canonical" href="http://andreapavoni.com/blog/2012/3/using-one-carrierwave-image-uploader-with-different-sizes-on-several-models" />
+
+    <meta name="google-site-verification" content="4kYa-0E2vIOPdWtJsz0BISFUuNoswW-SyiDRvezrXmQ" />
+
+    <meta name="author" content="Andrea Pavoni">
+    <meta name="language" content="en">
+    <meta name="description" content="Uploading images with custom sizes on different models is a very common task during web development. Every time, people uses different image uploaders for each model, where the only difference is about sizes. I'd like to share a simple hack to DRY code with some metaprogramming."/>
+    <meta name="keywords" content="andrea,pavoni,andrea pavoni,programmer,developer,rome,italy,ruby,javascript,go,golang,redis,oop,tdd,bdd,unix,open source,node,nodejs" />
+
+    <meta property="fb:admins" content="1309293135" />
+    <meta property="og:title" content="Using one carrierwave image uploader with different sizes on several models - Andrea Pavoni" />
+    <meta property="og:url" content="http://andreapavoni.com/blog/2012/3/using-one-carrierwave-image-uploader-with-different-sizes-on-several-models" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png" />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:site" content="@apeacox" />
+    <meta property="twitter:title" content="Using one carrierwave image uploader with different sizes on several models - Andrea Pavoni" />
+    <meta property="twitter:description" content="Uploading images with custom sizes on different models is a very common task during web development. Every time, people uses different image uploaders for each model, where the only difference is about sizes. I'd like to share a simple hack to DRY code with some metaprogramming." />
+    <meta property="twitter:image" content="http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png" />
+    <meta property="twitter:url" content="http://andreapavoni.com/blog/2012/3/using-one-carrierwave-image-uploader-with-different-sizes-on-several-models" />
+
+  </head>
+  <body>
+    <aside class="cover">
+      <div class="inner">
+        <div class="avatar">
+          <img src='http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png?s=150' alt='Andrea Pavoni image' />
+        </div>
+        <h1 class="title"><a href="http://andreapavoni.com">Andrea Pavoni</a></h1>
+        <p class="description">
+          Passionate programmer. *nix user since 1999. Husband/Father. Teacher.
+        </p>
+        <p class="description">Developer</p>
+        <ul class="contacts">
+          <li><a href="http://github.com/apeacox/" class="fa fa-github fa-lg" title="github"></a></li>
+          <li><a href="http://twitter.com/apeacox/" class="fa fa-twitter fa-lg" title="twitter"></a></li>
+          <li><a href="http://it.linkedin.com/in/andreapavoni/" class="fa fa-linkedin fa-lg" title="LinkedIn"></a></li>
+          <li><a href="https://plus.google.com/+AndreaPavoni?rel=author" class="fa fa-google-plus fa-lg" title="Google+"></a></li>
+          <li><a href="http://www.facebook.com/apavoni" class="fa fa-facebook fa-lg" title="facebook"></a></li>
+          <li><a href="http://instagram.com/apavoni" class="fa fa-instagram fa-lg" title="instagram"></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section class="wrapper">
+      <div class="wrapper-inner">
+        <article class="post">
+  <header>
+    <p class="meta">19 Mar 2012</p>
+    <h1 class="title"><a href="/blog/2012/3/using-one-carrierwave-image-uploader-with-different-sizes-on-several-models">Using one carrierwave image uploader with different sizes on several models</a></h2>
+  </header>
+
+  <div class="content">
+    
+
+    <p>First of all, a typical use case:</p>
+
+<ul>
+  <li>2 or more models with some image to upload, each model needs different image sizes. For example, you might need images for user’s avatar, photo galleries and/or screenshots.</li>
+  <li>using the awesome <a href="https://github.com/jnicklas/carrierwave">carrierwave</a> gem</li>
+</ul>
+
+<p>The <em>common</em> solution is to have several <em>image uploaders</em>, often with fancy names to distinguish them. I didn’t like this approach, so why don’t use some metaprogramming? ;-)</p>
+
+<p>I’ve used this solution on a commercial project with enough satisfaction, the mayor advantages are:</p>
+
+<ul>
+  <li>DRY code: it doesn’t make sense to have several <em>image uploaders</em> just because you need different sizes on each model</li>
+  <li>embrace conventions: you pick some decent <em>version names</em> (eg. <em>thumb</em>, <em>mini</em>, <em>main</em>, and so on) and reuse them contextually to the model.</li>
+</ul>
+
+<p>To get an instant picture of what we’re going to achieve, here’s the custom <code>ImageUploader</code>, I’ve removed some autogenerated code, you should already know how to use it. Check the comments inside it:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">ImageUploader</span> <span class="o">&lt;</span> <span class="no">CarrierWave</span><span class="o">::</span><span class="no">Uploader</span><span class="o">::</span><span class="no">Base</span>
+  <span class="c1"># use mini_magic gem for image processing</span>
+  <span class="kp">include</span> <span class="no">CarrierWave</span><span class="o">::</span><span class="no">MiniMagick</span>
+
+  <span class="c1"># call setup_available_size method before cache image</span>
+  <span class="n">before</span> <span class="ss">:cache</span><span class="p">,</span> <span class="ss">:setup_available_sizes</span>
+
+  <span class="k">def</span> <span class="nf">store_dir</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">default_url</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+
+  <span class="c1"># we process images with a custom method (read above)</span>
+  <span class="n">process</span> <span class="ss">:dynamic_resize_to_fit</span> <span class="o">=&gt;</span> <span class="ss">:default</span>
+
+  <span class="c1"># default processing, we assume that each model has a &quot;mini&quot; version</span>
+  <span class="n">version</span> <span class="ss">:mini</span> <span class="k">do</span>
+    <span class="n">process</span> <span class="ss">:dynamic_resize_to_fit</span> <span class="o">=&gt;</span> <span class="ss">:mini</span>
+  <span class="k">end</span>
+
+  <span class="c1"># conditional processing: we process &quot;thumb&quot; version only if it was defined in model</span>
+  <span class="n">version</span> <span class="ss">:thumb</span><span class="p">,</span> <span class="ss">:if</span> <span class="o">=&gt;</span> <span class="ss">:has_thumb_size?</span> <span class="k">do</span>
+    <span class="n">process</span> <span class="ss">:dynamic_resize_to_fit</span> <span class="o">=&gt;</span> <span class="ss">:thumb</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">extension_white_list</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">sanitize_regexp</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+
+  <span class="c1"># a lame wrapper to resize_to_fit method</span>
+  <span class="k">def</span> <span class="nf">dynamic_resize_to_fit</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">resize_to_fit</span> <span class="o">*</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">class</span><span class="o">::</span><span class="no">IMAGE_SIZES</span><span class="o">[</span><span class="n">size</span><span class="o">]</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="c1"># here&#39;s the metaprogramming magic!</span>
+  <span class="c1"># we check if the called method matches &quot;has_VERSION_size?&quot;</span>
+  <span class="c1"># VERSION is a version name for image size</span>
+  <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="c1"># we&#39;ve already defined &quot;has_VERSION_size?&quot;, so if a method with</span>
+    <span class="c1"># similar name is missed, it should return false</span>
+    <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="nb">method</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sr">/has_(.*)_size\?/</span><span class="p">)</span>
+    <span class="k">super</span>
+  <span class="k">end</span>
+
+  <span class="kp">protected</span>
+  <span class="c1"># the method called at the start</span>
+  <span class="c1"># it checks for &lt;model&gt;::IMAGE_SIZES hash and define a custom method &quot;has_VERSION_size?&quot;</span>
+  <span class="c1"># (more on this later in the article)</span>
+  <span class="k">def</span> <span class="nf">setup_available_sizes</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">class</span><span class="o">::</span><span class="no">IMAGE_SIZES</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="o">|</span>
+      <span class="nb">self</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+        <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;has_</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">_size?&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span> <span class="p">{</span> <span class="kp">true</span> <span class="p">}</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+<span class="k">end</span></code></pre></div>
+
+<p>And now, some models, each with the same <code>ImageUploader</code> and a <code>IMAGE_SIZES</code> Hash containing same keys, but different image sizes:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># app/models/photo.rb</span>
+<span class="k">class</span> <span class="nc">Photo</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="c1"># custom image sizes: each key is a version name</span>
+  <span class="no">IMAGE_SIZES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">1280</span><span class="p">,</span> <span class="mi">1280</span><span class="o">]</span><span class="p">,</span>
+    <span class="ss">:mini</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">300</span><span class="p">,</span><span class="mi">900</span><span class="o">]</span><span class="p">,</span>
+    <span class="ss">:thumb</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="o">]</span>
+  <span class="p">}</span>
+
+  <span class="n">mount_uploader</span> <span class="ss">:image</span><span class="p">,</span> <span class="no">ImageUploader</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/product.rb</span>
+<span class="k">class</span> <span class="nc">Product</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="c1"># other images sizes: same keys, different sizes</span>
+  <span class="no">IMAGE_SIZES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">700</span><span class="p">,</span> <span class="mi">700</span><span class="o">]</span><span class="p">,</span>
+    <span class="ss">:mini</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="o">]</span><span class="p">,</span>
+    <span class="ss">:thumb</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="o">]</span>
+  <span class="p">}</span>
+
+  <span class="n">mount_uploader</span> <span class="ss">:image</span><span class="p">,</span> <span class="no">ImageUploader</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span></code></pre></div>
+
+<p>As you can see, the key part relies on three methods:</p>
+
+<p><code>setup_available_sizes</code>: it defines some helper methods, according to the versions that where specified in models. That’s why it gets called before processing and storage of the uploaded file. Did you notice that this method accepts a <em>file</em> argument? It’s not a typo, but it’s because Carrierwave always passes that object to its callbacks (check the code <a href="https://github.com/jnicklas/carrierwave/blob/master/lib/carrierwave/uploader/cache.rb#L112">here</a> and <a href="https://github.com/jnicklas/carrierwave/blob/master/lib/carrierwave/uploader/callbacks.rb#L15">here</a>, it’s <a href="https://github.com/jnicklas/carrierwave/wiki/How-to%3A-use-callbacks">not documented</a>). If you try to omit it, you’ll get a <code>ArgumentError</code>.</p>
+
+<p><code>method_missing</code>: it doesn’t need too much explanation (or go to read <a href="http://pragprog.com/book/ppmetr/metaprogramming-ruby">this book</a>, now!), it should be enough to know that in this case, we use it to check if a given model, has defined a particular version (through the <code>setup_available_sizes</code> method we’ve seen above). In fact, <code>method_missing</code> is called <em>if and only if</em> there isn’t a <code>has_VERSION_size?</code> defined. That’s why it returns <em>false</em>.</p>
+
+<p><code>dynamic_resize_to_fit</code>: this is a simple wrapper to the carrierwave’s <code>resize_to_fit</code> method. Instead of passing <em>width</em> and <em>height</em> values, we pass a <em>version name</em>, so it can lookup the relative sizes from the model. To be honest, this approach is quite lame, because you can use some more <em>motaprogramming fu</em> to dynamically wrap carrierwave’s <a href="https://github.com/jnicklas/carrierwave/blob/master/lib/carrierwave/processing/mini_magick.rb">processor methods</a>. Now you have a decent excuse to play with something after you’ve finished to read ;-)</p>
+
+<p>That’s all, folks!</p>
+
+  </div>
+
+  <footer>
+    <h3 class='title'>Enjoyed this article? Share it!</h3>
+
+    <!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+      <a class="addthis_button_twitter"><i class='fa fa-twitter-square fa-2x'></i></a>
+      <a class="addthis_button_linkedin"><i class='fa fa-linkedin-square fa-2x'></i></a>
+      <a class="addthis_button_google_plusone_share"><i class='fa fa-google-plus-square fa-2x'></i></a>
+      <a class="addthis_button_facebook"><i class='fa fa-facebook-square fa-2x'></i></a>
+    </div>
+    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5359113314750bd5"></script>
+    <!-- AddThis Button END -->
+  </footer>
+
+  <div id="disqus_thread">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'apeacox';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+
+  </div>
+</article>
+
+      </div>
+
+      <footer class="wrapper-footer">
+        <p>made with <span class='heartbeat'>♥</span> by <a href='http://andreapavoni.com'>Andrea Pavoni</a> &copy;2010 - 2016
+          <a href="//www.iubenda.com/privacy-policy/207223" class="iubenda-white iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+          <script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src = "//cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
+        </p>
+      </footer>
+    </section>
+
+    <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9419221-5']);
+  _gaq.push(['_trackPageview']);
+  _gaq.push (['_gat._anonymizeIp']);
+
+  (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+   })();
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,1277 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title></title>
+    <link>http://andreapavoni.com</link>
+    <atom:link href="http://andreapavoni.com/feed.xml" rel="self" type="application/rss+xml" />
+    <description></description>
+    <language>en-us</language>
+    <pubDate>Tue, 05 Apr 2016 07:54:20 +0000</pubDate>
+    <lastBuildDate>Tue, 05 Apr 2016 07:54:20 +0000</lastBuildDate>
+
+    
+    
+    <item>
+      <title>A rails 4 tutorial application for beginners</title>
+      <link>http://andreapavoni.com/blog/2013/8/a-rails-4-tutorial-application-for-beginners</link>
+      <pubDate>Tue, 20 Aug 2013 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2013/8/a-rails-4-tutorial-application-for-beginners</guid>
+      <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;/h2&gt;
+
+&lt;p&gt;Unless you lived under a rock in the past 5 years or so, you should have already heard of &lt;a href=&quot;http://rubyonrails.org&quot;&gt;Ruby on Rails&lt;/a&gt;. In this article, we’ll write a very simple web application with it to show its power and speed of development.&lt;/p&gt;
+
+&lt;p&gt;We’ll cover the following topics:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;install Ruby&lt;/li&gt;
+  &lt;li&gt;install the rails gem&lt;/li&gt;
+  &lt;li&gt;how to start a new rails project&lt;/li&gt;
+  &lt;li&gt;directory structure of a rails project&lt;/li&gt;
+  &lt;li&gt;how to manage data with a database&lt;/li&gt;
+  &lt;li&gt;use already available components to handle common tasks&lt;/li&gt;
+  &lt;li&gt;add CRUD resources&lt;/li&gt;
+  &lt;li&gt;improve the app flawlessy&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;quick-setup&quot;&gt;Quick setup&lt;/h2&gt;
+
+&lt;p&gt;The following section offers a very quick overview of the tools you need to get started with Ruby on Rails development. If you already have a working rails environment, excluding the default ruby installation that some operating systems have, then feel free to skip the steps.&lt;/p&gt;
+
+&lt;h3 id=&quot;install-ruby&quot;&gt;Install Ruby&lt;/h3&gt;
+
+&lt;p&gt;If you run Linux or MacOSX on your computer, you may already have Ruby installed by default, however these kind of installations are out of date (eg: ruby 1.8.x) and &lt;em&gt;gems&lt;/em&gt; are difficult to manage. The best way is to install it manually or just use some tool that helps to manage custom Ruby installations, even multiple versions (eg: 1.9.x and 2.0.0 releases).&lt;/p&gt;
+
+&lt;p&gt;Instead of repeating what others have already said, I will link some useful guides:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;MacOSX: &lt;a href=&quot;http://createdbypete.com/articles/ruby-on-rails-development-with-mac-os-x-mountain-lion/&quot;&gt;Ruby on Rails development with Mac OS X Mountain Lion&lt;/a&gt;. Follow the steps until you reach &lt;em&gt;Install SQLite3&lt;/em&gt; section, we’ll see here how to install rails.&lt;/li&gt;
+  &lt;li&gt;Linux: &lt;a href=&quot;http://gorails.com/setup/ubuntu&quot;&gt;Setup Ruby On Rails on Ubuntu 13.04&lt;/a&gt;. Same as above, follow the steps until you reach &lt;em&gt;Configuring Git&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;Windows: &lt;a href=&quot;http://www.ruby-forum.com/topic/4413168&quot;&gt;SQLite3 Ruby 2.0 on Windows&lt;/a&gt; and &lt;a href=&quot;http://kylecordes.com/2008/git-windows-go&quot;&gt;Getting Started with Git and GitHub on Windows&lt;/a&gt;. I haven’t too much experience on windows, so keep the finger crossed and/or ask on the same forum thread. The Ruby community is very kind :-)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now, you should have all the requirements to get started.&lt;/p&gt;
+
+&lt;h3 id=&quot;install-bundler-gem&quot;&gt;Install Bundler gem&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://gembundler.com&quot;&gt;Bundler&lt;/a&gt; is a &lt;a href=&quot;http://guides.rubygems.org&quot;&gt;Ruby gem&lt;/a&gt; that helps you to manage development dependencies in a project. We’ll see how it works later, for now, just install it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;gem install bundler&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;install-rails-v400-gem&quot;&gt;Install Rails v4.0.0 gem&lt;/h3&gt;
+
+&lt;p&gt;We’re going to use the upcoming new version of rails. At the time of writing (mid june 2013), it’s the &lt;em&gt;2nd Release Candidate&lt;/em&gt; but, according to its author, &lt;a href=&quot;https://twitter.com/dhh/status/344819888566702081&quot;&gt;it should be enough stable&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;EDIT:&lt;/strong&gt; rails 4.0.0 is out, so don’t use rc2.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;gem install rails -v4.0.0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;a-simple-web-application-to-manage-and-share-bookmarks&quot;&gt;A simple web application to manage and share bookmarks&lt;/h2&gt;
+
+&lt;p&gt;Someone says that &lt;em&gt;doing it is the best way to learn&lt;/em&gt;, so here’s a &lt;em&gt;less common&lt;/em&gt; tutorial app: a simple platform to manage or share bookmarks. It’s nothing fancy, but it’s enough to apply some basic concepts. Moreover, aren’t you bored about &lt;em&gt;todo lists&lt;/em&gt; and &lt;em&gt;blog engines&lt;/em&gt; over and over? :-)&lt;/p&gt;
+
+&lt;h3 id=&quot;create-the-rails-app&quot;&gt;Create the rails app&lt;/h3&gt;
+
+&lt;p&gt;When you install rails, it comes with a bunch of other libraries and/or command line tools. The main one is &lt;code&gt;rails&lt;/code&gt;. For now, we’ll use it to generate the initial skeleton:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;rails new bookmarks -T -d sqlite3 -B&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I’ve also passed some arguments to the command:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;-T&lt;/code&gt;: skip &lt;code&gt;Test::Unit&lt;/code&gt; files. It’s not fundamental for our purposes (but they are in the everyday Ruby &lt;em&gt;and&lt;/em&gt; Rails development), so I skipped them because &lt;em&gt;testing&lt;/em&gt; is an argument apart and I don’t want to overcomplicate this article.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;-d sqlite3&lt;/code&gt;: we want to use &lt;a href=&quot;http://www.sqlite.org&quot;&gt;SQLite&lt;/a&gt; database. It fits perfectly for our purposes. Please note that, Rails has support for a wide variety of databases, even NoSQL ones. It’s also common to have different database engines based on the environment (eg: SQLite for development, MySQL or PostgreSQL for production, etc…) without code changes.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;-B&lt;/code&gt;: don’t run &lt;code&gt;bundle install&lt;/code&gt;, we’ll do it manually later.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Once you run the command, you should see a long list of lines that explain what is happening:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;andrea&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@mbair&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/Works/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rails&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bookmarks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqlite3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;README&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rdoc&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;Rakefile&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ru&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gitignore&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;Gemfile&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;[.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;andrea&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@mbair&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/Works/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bookmarks&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;andrea&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@mbair&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/Works/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bookmarks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;A new directory called &lt;code&gt;bookmarks&lt;/code&gt; (or whatever name you passed) has been created, along with a set of files and directories inside it. Enter this directory, we’ll see the important contents during the article.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-first-look-at-bundler-and-gemfile&quot;&gt;A first look at Bundler and Gemfile&lt;/h3&gt;
+
+&lt;p&gt;We mentioned Bundler as a tool to manage development dependencies in a Ruby app. It works by reading a file called &lt;code&gt;Gemfile&lt;/code&gt; that should be present in the root directory of the app. You need this to make sure all the required gems are installed, even rails itself. Here’s a brief look at the Gemfile generated by the &lt;code&gt;rails new&lt;/code&gt; command:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;https://rubygems.org&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Our rails version&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;4.0.0&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Use sqlite3 as the database for Active Record&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;sqlite3&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Use SCSS for stylesheets&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;sass-rails&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;~&amp;gt; 4.0.0&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Use Uglifier as compressor for JavaScript assets&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;uglifier&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;gt;= 1.3.0&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Use CoffeeScript for .js.coffee assets and views&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;coffee-rails&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;~&amp;gt; 4.0.0&lt;/span&gt;
+
+&lt;span class=&quot;s1&quot;&gt;# Uncomment this if you haven&amp;#39;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nodejs&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;coffeescript&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;installed&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# gem &amp;#39;therubyracer&amp;#39;, platforms: :ruby&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see, this is the default list of gems you need to start working on a Rails project. Of course, you’ll change it very often to add, remove or upgrade gems.&lt;/p&gt;
+
+&lt;p&gt;Now you can finally run &lt;code&gt;bundle install&lt;/code&gt; (the command we skipped by specifying &lt;code&gt;-B&lt;/code&gt;):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;andrea&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@mbair&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/Works/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bookmarks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Fetching&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rubygems&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;org&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Fetching&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rubygems&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;org&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Resolving&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dependencies&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Using&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rake&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Installing&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i18n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.]&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Your&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;complete!&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Use&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`bundle show [gemname]`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;see&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bundled&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;installed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;andrea&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@mbair&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/Works/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bookmarks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you use &lt;em&gt;git&lt;/em&gt;, this is a good moment to initialize the repo and proceed with the initial commit.&lt;/p&gt;
+
+&lt;h3 id=&quot;run-the-development-server&quot;&gt;Run the development server&lt;/h3&gt;
+
+&lt;p&gt;Even if you haven’t yet wrote any line of code, you can already use the Rails development server. Run the following command:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;andrea@mbair ~/Works/12dos/bookmarks % rails &lt;span class=&quot;nv&quot;&gt;server&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; Booting &lt;span class=&quot;nv&quot;&gt;WEBrick&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; Rails 4.0.0 application starting in development on http://0.0.0.0:3000
+&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; Run &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;rails server -h&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; more startup &lt;span class=&quot;nv&quot;&gt;options&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; Ctrl-C to shutdown server
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2013-06-14 16:10:48&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; INFO  WEBrick 1.3.1
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2013-06-14 16:10:48&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; INFO  ruby 1.9.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2012-04-20&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;x86_64-darwin12.2.0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2013-06-14 16:10:48&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; INFO  WEBrick::HTTPServer#start: &lt;span class=&quot;nv&quot;&gt;pid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1174&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3000
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;then point your browser to &lt;a href=&quot;http://localhost:3000&quot;&gt;http://localhost:3000&lt;/a&gt; and you’ll get a standard welcome page. This time we’ve used &lt;code&gt;rails server&lt;/code&gt;, another useful command offered by Rails, moreover, it works only when you run it inside a Rails project folder. We’ll see other useful commands later.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-quick-introduction-to-mvc-patterns-and-rails&quot;&gt;A quick introduction to MVC patterns and Rails&lt;/h2&gt;
+
+&lt;p&gt;Rails is usually defined as an &lt;em&gt;MVC framework&lt;/em&gt;. Basically, it means that the app behaviour is defined in this way:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Model:&lt;/strong&gt; manages data between the rest of the application and the database. You can define how a single entity behaves, this includes data validation, before/after save hooks, etc…&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Controller:&lt;/strong&gt; this is the &lt;em&gt;glue&lt;/em&gt; between the data managed by the Models and the rendered Views. Http requests that come to your app, are &lt;em&gt;routed&lt;/em&gt; to a controller which usually will interact with one or more models and finally renders the ouput along with an Http response.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;View:&lt;/strong&gt; the final output for a request. It’s usually a piece of HTML, but it might also be JSON or XML. We’ll see this later.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is, of course, an over-simplification, but it should be enough to get a &lt;em&gt;vague idea&lt;/em&gt; of how it works. I’ll dive into some details later.&lt;/p&gt;
+
+&lt;h2 id=&quot;add-a-bookmark-resource&quot;&gt;Add a Bookmark resource&lt;/h2&gt;
+
+&lt;p&gt;The goal of our app is to manage bookmarks, right? So we create our &lt;code&gt;Bookmark&lt;/code&gt; resource:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;andrea@mbair ~/Works/12dos/bookmarks % rails generate scaffold bookmark title:string url:string
+    invoke    active_record
+    create    db/migrate/20130614142337_create_bookmarks.rb
+    create    app/models/bookmark.rb
+    invoke    resource_route
+     route    resources :bookmarks
+    invoke    scaffold_controller
+    create    app/controllers/bookmarks_controller.rb
+    &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This time, we’ve used &lt;code&gt;rails generate&lt;/code&gt;, one of the most useful commands. In this case, we’ve generated a &lt;em&gt;scaffold&lt;/em&gt; that creates all the necessary files and code to automatically get a full &lt;em&gt;MVC&lt;/em&gt; stack that manages a &lt;em&gt;Bookmark&lt;/em&gt;. In the next paragraphs, we’ll see in detail what did the above command.&lt;/p&gt;
+
+&lt;h3 id=&quot;database-migration&quot;&gt;Database migration&lt;/h3&gt;
+
+&lt;p&gt;We’ve specified that a &lt;em&gt;Bookmark&lt;/em&gt; record is made of a &lt;em&gt;title&lt;/em&gt; and a &lt;em&gt;url&lt;/em&gt; fields, both of type &lt;em&gt;string&lt;/em&gt; (255 chars by default). So, the rails scaffold generator has automatically created a &lt;em&gt;migration&lt;/em&gt; script to update your database schema: &lt;code&gt;db/migrate/db/migrate/20130614142337_create_bookmarks.rb&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CreateBookmarks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Migration&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;change&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create_table&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:bookmarks&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:title&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:url&lt;/span&gt;
+
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;timestamps&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Even if it’s almost easy to read, this code basically means:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;create a &lt;code&gt;bookmarks&lt;/code&gt; table on database (note the pluralized form)&lt;/li&gt;
+  &lt;li&gt;it has the fields &lt;code&gt;title&lt;/code&gt; and &lt;code&gt;url&lt;/code&gt; of type string&lt;/li&gt;
+  &lt;li&gt;also add timestmps by default (this is automatically translated to &lt;code&gt;created_at&lt;/code&gt; and &lt;code&gt;updated_at&lt;/code&gt; datetime fields)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;However, your database still doesn’t know about these changes to the schema, you need to run the migration task:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;andrea@mbair ~/Works/12dos/bookmarks % rake db:migrate
+&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;  CreateBookmarks: &lt;span class=&quot;nv&quot;&gt;migrating&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;================================================&lt;/span&gt;
+-- create_table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;:bookmarks&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+   -&amp;gt; 0.0011s
+&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;  CreateBookmarks: migrated &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.0012s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=======================================&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://rake.rubyforge.org&quot;&gt;Rake&lt;/a&gt; is another common and useful tool in the Ruby world. It acts like a &lt;em&gt;Makefile&lt;/em&gt; in a Ruby fashion. Rails comes with several &lt;em&gt;rake&lt;/em&gt; tasks ready to use (you can also create custom ones, if needed):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;andrea@mbair ~/Works/12dos/bookmarks % rake -T
+rake about                  &lt;span class=&quot;c&quot;&gt;# List versions of all Rails frameworks and the environment&lt;/span&gt;
+rake assets:clean           &lt;span class=&quot;c&quot;&gt;# Remove old compiled assets&lt;/span&gt;
+rake assets:clobber         &lt;span class=&quot;c&quot;&gt;# Remove compiled assets&lt;/span&gt;
+rake assets:environment     &lt;span class=&quot;c&quot;&gt;# Load asset compile environment&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;the-boomark-model&quot;&gt;The Boomark model&lt;/h3&gt;
+
+&lt;p&gt;The model representing a &lt;em&gt;bookmark&lt;/em&gt; was created in &lt;code&gt;app/models/bookmark.rb&lt;/code&gt;, at the moment it’s almost empty in terms of code, but it already knows how to behave with the database. To demonstrate this, we’ll use another Rails command to open a &lt;em&gt;console&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;andrea@mbair ~/Works/12dos/bookmarks % rails console
+Loading development environment &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Rails 4.0.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, we have a shell to manually issue commands to our rails app. Let’s see if it knows something about our &lt;em&gt;Bookmark&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Bookmark&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Bookmark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;created_at&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;updated_at&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Bookmark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;COUNT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;bookmarks&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It knows about the &lt;em&gt;bookmarks&lt;/em&gt; table, its fields and how to query the database. Ok, create one &lt;em&gt;Bookmark&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Bookmark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Hello Bookmarks app!&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;http://localhost:3000&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transaction&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;SQL&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;INTO&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;bookmarks&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;created_at&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;title&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;updated_at&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;url&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;?,&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;?,&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;?,&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;?)&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;created_at&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Fri&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Jun&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2013&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;UTC&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;title&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Hello Bookmarks app!&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;updated_at&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Fri&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Jun&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2013&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;UTC&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;url&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;http://localhost:3000&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transaction&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#&amp;lt;Bookmark id: 1, title: &amp;quot;Hello Bookmarks app!&amp;quot;, url: &amp;quot;http://localhost:3000&amp;quot;, created_at: &amp;quot;2013-06-14 15:16:17&amp;quot;, updated_at: &amp;quot;2013-06-14 15:16:17&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Bookmark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;COUNT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;bookmarks&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;the-bookmarkscontroller-and-its-views&quot;&gt;The BookmarksController and its views&lt;/h3&gt;
+
+&lt;p&gt;We said that the &lt;em&gt;scaffold generator&lt;/em&gt; has created all the parts of the MVC stack, now is the time for the controller in &lt;code&gt;app/controllers/bookmarks_controller.rb&lt;/code&gt;. You’ll see a &lt;code&gt;BookmarksController&lt;/code&gt; class and a bunch of methods (called &lt;em&gt;actions&lt;/em&gt;). Each action corresponds to an HTTP PATH (eg: &lt;code&gt;/bookmarks&lt;/code&gt;) and an HTTP verb (GET, POST, PUT, DELETE).&lt;/p&gt;
+
+&lt;p&gt;The autogenerated code is quite clear and, for brevity reasons, I can’t dive too much in it. The interesting parts are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;nowhere in the code is specified how to render views. There’s a reason for that: html views are based on the controller’s actions names. For example, &lt;code&gt;BookmarksController#show&lt;/code&gt; will render a template placed in &lt;code&gt;app/views/bookmarks/show.html.erb&lt;/code&gt;. Of course, only the actions that respond to &lt;em&gt;HTTP GET&lt;/em&gt; have a template, the rest are usually redirects. Check yourself the contents in &lt;code&gt;app/views/bookmarks/&lt;/code&gt; to get an idea.&lt;/li&gt;
+  &lt;li&gt;it looks like there’s some automagical &lt;em&gt;JSON&lt;/em&gt; support. That’s true, rails supports &lt;em&gt;HTML&lt;/em&gt; and &lt;em&gt;JSON&lt;/em&gt; request by default, I’ll show you this later.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;routes&quot;&gt;Routes&lt;/h3&gt;
+
+&lt;p&gt;The final component for the &lt;em&gt;MVC&lt;/em&gt; stack is about routing the &lt;em&gt;HTTP&lt;/em&gt; requests to the proper controller and action. To make this, the Rails generator has updated &lt;code&gt;config/routes.rb&lt;/code&gt; file and has added the line &lt;code&gt;resources :bookmarks&lt;/code&gt; that is a shorthand to say: &lt;em&gt;use &lt;a href=&quot;http://en.wikipedia.org/wiki/Representational_State_Transfer&quot;&gt;REST&lt;/a&gt; routes for the the resource bookmark&lt;/em&gt;. If you’re wondering &lt;em&gt;what&lt;/em&gt; routes, you can use the relative &lt;em&gt;rake task&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;andrea@mbair ~/Works/12dos/bookmarks % rake routes
+       Prefix Verb   URI Pattern                   Controller#Action
+    bookmarks GET    /bookmarks&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;.:format&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;          bookmarks#index
+              POST   /bookmarks&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;.:format&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;          bookmarks#create
+ new_bookmark GET    /bookmarks/new&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;.:format&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      bookmarks#new
+edit_bookmark GET    /bookmarks/:id/edit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;.:format&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; bookmarks#edit
+     bookmark GET    /bookmarks/:id&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;.:format&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      bookmarks#show
+              PATCH  /bookmarks/:id&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;.:format&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      bookmarks#update
+              PUT    /bookmarks/:id&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;.:format&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      bookmarks#update
+              DELETE /bookmarks/:id&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;.:format&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      bookmarks#destroy&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;try-on-the-server&quot;&gt;Try on the server&lt;/h3&gt;
+
+&lt;p&gt;Now, the fun part. Restart your rails server with &lt;code&gt;rails server&lt;/code&gt; and go to &lt;a href=&quot;http://localhost:3000/bookmarks&quot;&gt;http://localhost:3000/bookmarks&lt;/a&gt;. If you followed the above example in console, you should already see the Bookmark created earlier, otherwise, you can create a new one by clicking on &lt;em&gt;New bookmark&lt;/em&gt; link.&lt;/p&gt;
+
+&lt;p&gt;Try &lt;a href=&quot;http://localhost:3000/bookmarks.json&quot;&gt;http://localhost:3000/bookmarks.json&lt;/a&gt; and see what you’ll get. You still haven’t written a single line of Ruby, and it already does a lot of things. Awesome, isn’t it? :-)&lt;/p&gt;
+
+&lt;h2 id=&quot;adding-users-and-authentication&quot;&gt;Adding users and authentication&lt;/h2&gt;
+
+&lt;p&gt;Once we have the &lt;em&gt;Bookmark&lt;/em&gt; resource, we need &lt;em&gt;Users&lt;/em&gt; that own bookmarks and a way to authenticate them. The Ruby and Rails community is very active: whatever the task is, you’ll probably find at least one gem to do it (if you don’t, it might be a good idea to write one). Luckily, user authentication is a very common task, and there are several options. The most used is &lt;a href=&quot;https://github.com/plataformatec/devise&quot;&gt;Devise&lt;/a&gt;, let’s use it.&lt;/p&gt;
+
+&lt;h3 id=&quot;installing-devise-gem&quot;&gt;Installing Devise gem&lt;/h3&gt;
+
+&lt;p&gt;Open &lt;code&gt;Gemfile&lt;/code&gt; and add this line:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;devise&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;~&amp;gt; 3.0.0.rc&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We also told Bundler to use a version of Devise that should be &lt;em&gt;greater_or_equal&lt;/em&gt; than its &lt;em&gt;minor version&lt;/em&gt; (eg: 3.0.1 is ok, 3.1.0 isn’t).&lt;/p&gt;
+
+&lt;p&gt;Run &lt;code&gt;bundle install&lt;/code&gt; to install the gem:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;andrea@mbair ~/Works/12dos/bookmarks % bundle install
+Resolving dependencies...
+Using rake &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.0.4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+Installing devise &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.0.0.rc&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+Your bundle is &lt;span class=&quot;nb&quot;&gt;complete&lt;/span&gt;!
+Use &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;bundle show &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;gemname&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; to see where a bundled gem is installed.
+andrea@mbair ~/Works/12dos/bookmarks %&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;and run the Devise generator:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;andrea@mbair ~/Works/12dos/bookmarks % rails generate devise:install
+      create  config/initializers/devise.rb
+      create  config/locales/devise.en.yml
+&lt;span class=&quot;o&quot;&gt;===============================================================================&lt;/span&gt;
+
+Some setup you must &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; manually &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; you haven&lt;span class=&quot;err&quot;&gt;&amp;#39;&lt;/span&gt;t yet:
+
+  1. Ensure you have defined default url options in your environments files. Here
+     is an example of default_url_options appropriate &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; a development environment
+     in config/environments/development.rb:
+
+       config.action_mailer.default_url_options &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; :host &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;localhost:3000&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+     In production, :host should be &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;to the actual host of your application.
+
+  2. Ensure you have defined root_url to *something* in your config/routes.rb.
+     For example:
+
+       root :to &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;home#index&amp;quot;&lt;/span&gt;
+
+  3. Ensure you have flash messages in app/views/layouts/application.html.erb.
+     For example:
+
+       &amp;lt;p &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;notice&amp;quot;&lt;/span&gt;&amp;gt;&amp;lt;%&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; notice %&amp;gt;&amp;lt;/p&amp;gt;
+       &amp;lt;p &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert&amp;quot;&lt;/span&gt;&amp;gt;&amp;lt;%&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; alert %&amp;gt;&amp;lt;/p&amp;gt;
+
+  4. If you are deploying Rails 3.1+ on Heroku, you may want to &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;:
+
+       config.assets.initialize_on_precompile &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;     &lt;/span&gt;On config/application.rb forcing your application to not access the DB
+     or load models when precompiling your assets.
+
+  5. You can copy Devise views &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; customization&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; to your app by running:
+
+       rails g devise:views
+
+&lt;span class=&quot;o&quot;&gt;===============================================================================&lt;/span&gt;
+andrea@mbair ~/Works/12dos/bookmarks %&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see, it has created two files under &lt;code&gt;config/&lt;/code&gt; directory:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;config/initializers/devise.rb&lt;/code&gt;: here you can change several Devise settings. However, we’ll use defaults because are enough.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;config/locales/devise.en.yml&lt;/code&gt;: this file contains i18n translations for Devise. Please note that &lt;code&gt;config/locales/&lt;/code&gt; is the default path to put all the locales for a Rails app.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Devise also told us to check five steps to complete the setup:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;add &lt;code&gt;config.action_mailer.default_url_options = { :host =&amp;gt; &#39;localhost:3000&#39; }&lt;/code&gt; to &lt;code&gt;config/environments/development.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;define a &lt;em&gt;root_url&lt;/em&gt; in &lt;code&gt;config/routes.rb&lt;/code&gt;. Fow now, we can achieve this by pointing &lt;code&gt;BookmarksController#index&lt;/code&gt; to the root of the site:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Bookmarks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Application&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;draw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# [...]&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;bookmarks#index&amp;#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# [...]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;add the two pieces of html in &lt;code&gt;app/views/layouts/application.html.erb&lt;/code&gt;. This file is the main layout your Rails app.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;skip the fourth step because we’re running a Rails v4.0.x app, not a 3.1.x one)&lt;/li&gt;
+  &lt;li&gt;generate the Devise default views with &lt;code&gt;rails generate devise:views&lt;/code&gt;. They contain a basic scaffold to get Devise work (eg: login/signup forms, etc…). Please note that Devise has several features concerning user authentication and registration, but we’re going to use only a small set of them, so don’t panic if you see a lot of generated views.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;generate-a-user-model&quot;&gt;Generate a User model&lt;/h3&gt;
+
+&lt;p&gt;Setup for Devise is done, but we still haven’t a &lt;em&gt;User&lt;/em&gt; model, we need to create one:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;andrea@mbair ~/Works/12dos/bookmarks % rails generate devise User
+      invoke    active_record
+      create    db/migrate/20130617132545_devise_create_users.rb
+      create    app/models/user.rb
+      insert    app/models/user.rb
+       route    devise_for :users&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you remember the scaffold generator we used to generate a &lt;em&gt;Bookmark&lt;/em&gt;, this one is very similar even if just focused on the model, plus the route that tells Devise to handle &lt;code&gt;/users/*&lt;/code&gt; paths. In fact, it created a migration for users and the &lt;em&gt;User&lt;/em&gt; class. Edit the migration to look like this (remove or comment the rest):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DeviseCreateUsers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Migration&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;change&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;## Database authenticatable&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;              &lt;span class=&quot;ss&quot;&gt;:null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:default&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:encrypted_password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:default&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;## Rememberable&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:remember_created_at&lt;/span&gt;
+
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;timestamps&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;add_index&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;                &lt;span class=&quot;ss&quot;&gt;:unique&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Also the model needs to reflect the changes made to the migration:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;devise&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:database_authenticatable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:registerable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+         &lt;span class=&quot;ss&quot;&gt;:rememberable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:validatable&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The last step, is to run the migration with &lt;code&gt;rake db:migrate&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;In this way, we have a simple authentication system that lets a user to register, login and logout. Try to run &lt;code&gt;rake routes&lt;/code&gt; and you’ll see the new routes for these actions, all referred to &lt;em&gt;users&lt;/em&gt;. You can also play in the Rails console to create some user.&lt;/p&gt;
+
+&lt;h3 id=&quot;user-has-many-bookmarks&quot;&gt;User has many Bookmarks&lt;/h3&gt;
+
+&lt;p&gt;Now that we have &lt;em&gt;User&lt;/em&gt; and &lt;em&gt;Bookmark&lt;/em&gt;, we need to &lt;em&gt;associate&lt;/em&gt; them. In this case, it’s a &lt;em&gt;one to many&lt;/em&gt; relation. As a shared convention, foreign keys name are made of the model name suffixed by _id. Of course, we’ll not change the already created migrations, instead, we’re going to create a new one:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;rails&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;generate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;migration&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;AddUserIdToBookmark&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;integer&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Choosing an appropriate, arbitrary name is not mandatory, but it’s a &lt;em&gt;best practice&lt;/em&gt; that you should follow. Our generated migration will add a &lt;em&gt;user_id&lt;/em&gt; integer column to the &lt;em&gt;bookmarks&lt;/em&gt; table. Also, feel free to run the migration now.&lt;/p&gt;
+
+&lt;p&gt;At the moment, no one of our two rails models knows about each other, we’ve only added a field on the database, but it’s meaningless without some additional instruction:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;add &lt;code&gt;has_many :bookmarks&lt;/code&gt; to &lt;code&gt;app/models/user.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;add &lt;code&gt;belongs_to :user&lt;/code&gt; to &lt;code&gt;app/models/bookmark.rb&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With these changes, a &lt;code&gt;User&lt;/code&gt; instance will automatically have a &lt;code&gt;bookmarks&lt;/code&gt; method (and many others), referred to all &lt;em&gt;Bookmark&lt;/em&gt; records with that specific &lt;em&gt;user id&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;require-authentication-to-manage-your-bookmarks&quot;&gt;Require authentication to manage your bookmarks&lt;/h3&gt;
+
+&lt;p&gt;Looking at the models, it looks like the &lt;em&gt;data part&lt;/em&gt; is complete and working. However, the &lt;code&gt;BookmarksController&lt;/code&gt; created by the scaffold command doesn’t apply any authentication check, it needs some fix.&lt;/p&gt;
+
+&lt;p&gt;First of all, check user authentication before executing whatever action:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BookmarksController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# other before_actions&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;before_action&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:authenticate_user!&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# [...] actions&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This means that, from now, each request that arrives to the &lt;code&gt;BookmarksController&lt;/code&gt; will first check if a user is authenticated (&lt;code&gt;authenticate_user!&lt;/code&gt; is a method provided by Devise), otherwise it will be redirected to the login page.&lt;/p&gt;
+
+&lt;p&gt;Then, access only bookmarks owned by the authenticated user. To do this, replace &lt;code&gt;Bookmark&lt;/code&gt; occurrencies with &lt;code&gt;current_user.bookmarks&lt;/code&gt;. As you may wonder, &lt;code&gt;current_user&lt;/code&gt; is an object provided by Devise that represents the authenticated user, while &lt;code&gt;.bookmarks&lt;/code&gt; is the method provided by the model association between  &lt;em&gt;User&lt;/em&gt; and &lt;em&gt;Bookmark&lt;/em&gt; models.&lt;/p&gt;
+
+&lt;h3 id=&quot;try-on-the-server-1&quot;&gt;Try on the server&lt;/h3&gt;
+
+&lt;p&gt;If you didn’t played with the web interface yet, now it’s a good time to do it. Here there’re some hints:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;go to &lt;a href=&quot;http://localhost:3000&quot;&gt;http://localhost:3000&lt;/a&gt;, it should redirect to &lt;a href=&quot;http://localhost:3000/users/sign_in&quot;&gt;http://localhost:3000/users/sign_in&lt;/a&gt;, the login page;&lt;/li&gt;
+  &lt;li&gt;if you haven’t registered any user, then go to &lt;a href=&quot;http://localhost:3000/users/sign_up&quot;&gt;http://localhost:3000/users/sign_up&lt;/a&gt; and register a new one;&lt;/li&gt;
+  &lt;li&gt;retry to go to &lt;a href=&quot;http://localhost:3000/&quot;&gt;http://localhost:3000/&lt;/a&gt; again, it will work as well as going to &lt;a href=&quot;http://localhost:3000/bookmarks&quot;&gt;http://localhost:3000/bookmarks&lt;/a&gt; because they’re the same action;&lt;/li&gt;
+  &lt;li&gt;create some bookmarks from &lt;a href=&quot;http://localhost:3000/bookmarks/new&quot;&gt;http://localhost:3000/bookmarks/new&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;handling-wrong-inputs&quot;&gt;Handling wrong inputs&lt;/h2&gt;
+
+&lt;p&gt;At the moment, we have several areas where a wrong user input might damage you application:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;providing incomplete or malformed data when creating a new Bookmark&lt;/li&gt;
+  &lt;li&gt;requesting a bookmark id that doesn’t exist as a record on the database, for example by visiting &lt;a href=&quot;http://localhost:3000/bookmarks/111&quot;&gt;http://localhost:3000/bookmarks/111&lt;/a&gt;, will cause an error in your app, very ugly to see.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s see how to solve these issues.&lt;/p&gt;
+
+&lt;h3 id=&quot;model-validations&quot;&gt;Model validations&lt;/h3&gt;
+
+&lt;p&gt;If you tried to use a password shorter than 8 chars or a bad formatted email during user registrations, you’d note that Devise has spotted those errors by not saving the record and rendering the user registration form again. In fact, Devise provided some default validations for users, but our app need validations on the &lt;code&gt;Bookmark&lt;/code&gt; model too. Change &lt;code&gt;app/models/bookmark.rb&lt;/code&gt; to look like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Bookmark&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;belongs_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# ensure that a user_id is present&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# ensure that title is present and at least 10 chars long&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;minimum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# ensure the url is present, and respects the URL format for http/https&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Regexp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;URI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;regexp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;%w(http https)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))},&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;These validations are self-explanatory, so I’ll not dive into them. Just keep in mind that there are many others or, in case, you can create custom ones.&lt;/p&gt;
+
+&lt;h3 id=&quot;when-a-resource-is-not-found&quot;&gt;When a resource is not found…&lt;/h3&gt;
+
+&lt;p&gt;The second problem we addressed is about passing a wrong/non-existent identifier for a given resource. You can handle it in many ways, perhaps the simplest (and laziest) one is to redirect to the index, with a &lt;em&gt;flash message&lt;/em&gt;. To do this, we only need to change some line of code in &lt;code&gt;BookmarksController&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BookmarksController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# [...] other code here&lt;/span&gt;
+
+  &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Use callbacks to share common setup or constraints between actions.&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_bookmark&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@bookmark&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;current_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bookmarks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;flash&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:alert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Bookmark not found.&amp;#39;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;redirect_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;root_url&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;set_bookmark&lt;/code&gt; is a method called in a &lt;em&gt;before_action&lt;/em&gt; only for actions that need a resource id (show, edit, update, destroy). The new lines will safely check for existence on database, otherwise the user will be redirected to the root path of the site, with a short flash message.&lt;/p&gt;
+
+&lt;h2 id=&quot;improving-the-app-one-step-at-a-time&quot;&gt;Improving the app one step at a time&lt;/h2&gt;
+
+&lt;p&gt;Our app is almost complete, or at leats, it lacks several little details that make a difference. We’ll try to address some of these. The goal, is to demostrate how to improve an existing app with small steps.&lt;/p&gt;
+
+&lt;h3 id=&quot;add-a-better-root-page&quot;&gt;Add a better root page&lt;/h3&gt;
+
+&lt;p&gt;This is a simple task. All we need is a new route, controller and view. This time, we’ll use a generator dedicated to the controller:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;rails generate controller site index&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I’ve omitted the output because at the moment you should already guess what it did. In short, it has created a &lt;code&gt;SiteController&lt;/code&gt; with an action called &lt;code&gt;index&lt;/code&gt;, plus the related view in &lt;code&gt;app/views/site/index.html.erb&lt;/code&gt; and a new route in &lt;code&gt;config/routes.rb&lt;/code&gt;. However, the route should be changed to reflect our goal:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Bookmarks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Application&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;draw&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# [...] other routes&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# Comment/remove these lines&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# get &amp;quot;site/index&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# root &amp;#39;bookmarks#index&amp;#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# Use this&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;site#index&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you try to load &lt;a href=&quot;http://localhost:3000&quot;&gt;http://localhost:3000&lt;/a&gt; you’ll see the empty template of &lt;code&gt;app/views/site/index.html.erb&lt;/code&gt;. To render content, we need to change the controller in &lt;code&gt;app/controllers/site_controller.rb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SiteController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# retrieve all Bookmarks ordered by descending creation timestamp&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@bookmarks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Bookmark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;created_at desc&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;while the view in &lt;code&gt;app/views/site/index.html.erb&lt;/code&gt;, might  contain this basic markup as a starting point:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-erb&quot; data-lang=&quot;erb&quot;&gt;&lt;span class=&quot;x&quot;&gt;&amp;lt;h2&amp;gt;Latest Bookmarks&amp;lt;/h2&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;&amp;lt;table style=&amp;quot;width: 100%&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  &amp;lt;thead&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;lt;tr&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;      &amp;lt;th&amp;gt;Url&amp;lt;/th&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;lt;/tr&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  &amp;lt;/thead&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;x&quot;&gt;  &amp;lt;tbody&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@bookmarks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bookmark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;lt;tr&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;      &amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;link_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bookmark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bookmark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;lt;/tr&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  &amp;lt;/tbody&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;&amp;lt;/table&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Again, note how the controller processes the request by retrieving some records from the database through the model &lt;code&gt;Bookmark&lt;/code&gt;, then renders its view that contains the proper data to show the bookmarks.&lt;/p&gt;
+
+&lt;h3 id=&quot;prettier-gui&quot;&gt;Prettier GUI&lt;/h3&gt;
+
+&lt;p&gt;Being a programmer, I haven’t too much skills in design and layouts, but there are several CSS frameworks that help a lot. Instead of picking the famous &lt;a href=&quot;http://twitter.github.io/bootstrap/&quot;&gt;Twitter Bootstrap&lt;/a&gt;, I chose &lt;a href=&quot;http://foundation.zurb.com&quot;&gt;ZURB Foundation&lt;/a&gt;, just to be fancy. There are a lot of ways to integrate existing CSS/Javascript frameworks and libraries inside a Rails app, the simplest one, is to use a gem when possible. Luckily, there’s one for Zurb Foundation, just add it to your Gemfile:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;zurb-foundation&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;~&amp;gt; 4.2.2&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;run &lt;code&gt;bundle install&lt;/code&gt;, plus its install generator:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;rails generate foundation:install&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;this command, will ask you to overwrite your default application layout in &lt;code&gt;app/views/layouts/application.html.erb&lt;/code&gt;, press &lt;em&gt;Y&lt;/em&gt; without worries. For brevity reasons, I’ve put the contents of the file &lt;a href=&quot;https://gist.github.com/apeacox/87e2c7261abeeb1ccf9d&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Moreover, we can also remove old scaffold’s stylesheets:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;rm app/assets/stylesheets/scaffolds.css.scss&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;prettier-forms&quot;&gt;Prettier forms&lt;/h3&gt;
+
+&lt;p&gt;Forms are still ugly and boring to write, so we’ll use &lt;a href=&quot;https://github.com/plataformatec/simple_form&quot;&gt;another useful gem&lt;/a&gt; (from the same authors of &lt;em&gt;Devise&lt;/em&gt;) to mitigate the problem. Add it to your Gemfile:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;simple_form&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;~&amp;gt; 3.0.0.rc&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;run &lt;code&gt;bundle install&lt;/code&gt; and the install generator (note that it already supports Foundation’s markup structure):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;rails generate simple_form:install --foundation&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We’ll also re-generate &lt;em&gt;Devise&lt;/em&gt; views, because it supports &lt;em&gt;SimpleForm&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;rails generate devise:views&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The generator will ask you if you want to overwrite existent files, press &lt;em&gt;Y&lt;/em&gt; because that’s what we really want.&lt;/p&gt;
+
+&lt;p&gt;The last step is to fix the &lt;em&gt;Bookmarks&lt;/em&gt; form, it wasn’t updated by the other generators, we’ll do it manually by overwriting its (partial) template in &lt;code&gt;app/views/bookmarks/_form.html.erb&lt;/code&gt; with the following content:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;%= simple_form_for(@bookmark) do |f| %&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;sx&quot;&gt;  &amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error_notification&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;%&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;sx&quot;&gt;  &amp;lt;div class=&amp;quot;form-inputs&amp;quot;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;%= f.input :title %&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;sx&quot;&gt;    &amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:url&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;%&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;sx&quot;&gt;  &amp;lt;/div&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;form-actions&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;button&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:submit&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;%&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;sx&quot;&gt;  &amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;% end &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;a-welcome-page&quot;&gt;A welcome page&lt;/h3&gt;
+
+&lt;p&gt;It would be &lt;em&gt;professional&lt;/em&gt; to show a welcome page for non-registered users. To keep things simple, I’ll use the same &lt;code&gt;SiteController#index&lt;/code&gt; used for the root page. Modify &lt;code&gt;app/views/site/index.html.erb&lt;/code&gt; to look like &lt;a href=&quot;https://gist.github.com/apeacox/98eeca9a0979c5802eb3&quot;&gt;this&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h2&gt;
+
+&lt;p&gt;Congratulations! If you carefully followed all the steps, you should have a basic, yet working, Ruby On Rails app. Of course, this is only the &lt;em&gt;tip of the iceberg&lt;/em&gt;: for brevity reasons, I’ve oversimplified some concepts, and I’ve skipped several important aspects (eg: using CSS/SASS and Javascript/Coffeescript, testing, deploy, etc…) that you should know if you want to be a proficient Ruby On Rails developer. However, as you can see, this happened to be already a huge article, at least in terms of lenght :-P&lt;/p&gt;
+
+&lt;p&gt;I’ve uploaded the &lt;em&gt;complete app&lt;/em&gt; on github: &lt;a href=&quot;https://github.com/apeacox/12dos-bookmarks&quot;&gt;https://github.com/apeacox/12dos-bookmarks&lt;/a&gt;. It’s a bit different from the one we wrote here, but it also adds some more features:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;pagination with &lt;a href=&quot;https://github.com/amatsuda/kaminari&quot;&gt;kaminari&lt;/a&gt; gem&lt;/li&gt;
+  &lt;li&gt;use &lt;em&gt;profile pages&lt;/em&gt; to show single user’s bookmarks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Clone or fork the code and experiment with it.&lt;/p&gt;
+
+&lt;h2 id=&quot;webography&quot;&gt;Webography&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;&quot;&gt;http://guides.rubyonrails.org&lt;/a&gt;: official documentation and guides&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://railscasts.com&quot;&gt;http://railscasts.com&lt;/a&gt;: videos (and transcripts)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.ruby-lang.org/en/documentation/&quot;&gt;http://www.ruby-lang.org/en/documentation&lt;/a&gt;: Ruby’s official documentation&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ruby-toolbox.com&quot;&gt;https://www.ruby-toolbox.com&lt;/a&gt;: a place where to find gems for your tasks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;bibliography&quot;&gt;Bibliography&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://pragprog.com/book/ruby4/programming-ruby-1-9-2-0&quot;&gt;Programming Ruby 1.9 &amp;amp; 2.0 (4th edition): The Pragmatic Programmers’ Guide&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://pragprog.com/book/rails4/agile-web-development-with-rails-4&quot;&gt;Agile Web Development with Rails 4&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://pragprog.com/book/jvrails2/crafting-rails-4-applications&quot;&gt;Crafting Rails 4 Applications: Expert Practices for Everyday Rails Development&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://leanpub.com/tr4w&quot;&gt;The Rails 4 Way&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Hello Go lang!</title>
+      <link>http://andreapavoni.com/blog/2013/5/hello-go-lang</link>
+      <pubDate>Fri, 03 May 2013 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2013/5/hello-go-lang</guid>
+      <description>&lt;h2 id=&quot;tldr&quot;&gt;TL;DR&lt;/h2&gt;
+&lt;p&gt;I decided to try Go and I developed a simple web app. There’s a &lt;a href=&quot;http://goshort.herokuapp.com&quot;&gt;working demo on heroku&lt;/a&gt; and source code is available on &lt;a href=&quot;https://github.com/apeacox/goshort&quot;&gt;github&lt;/a&gt;. It was an awesome journey and I’m planning to go further.&lt;/p&gt;
+
+&lt;h2 id=&quot;beyond-hello-world&quot;&gt;Beyond Hello World&lt;/h2&gt;
+&lt;p&gt;You know, when you learn a new programming language, &lt;em&gt;Hello World&lt;/em&gt; is not enough, you always need some known problem to solve, but &lt;em&gt;known problem&lt;/em&gt; doesn’t mean a boring non-practical algorithm. I decided to port &lt;a href=&quot;https://github.com/apeacox/avarus&quot;&gt;avarus&lt;/a&gt;, a simple Url shortener built with &lt;a href=&quot;http://cuba.is&quot;&gt;Cuba&lt;/a&gt; ruby microframework and &lt;a href=&quot;http://redis.io&quot;&gt;Redis&lt;/a&gt;. It is a web application, it uses a database and it took a very low amount of code (~150/200 loc). So it’s a good candidate to port in Go.&lt;/p&gt;
+
+&lt;h2 id=&quot;first-steps&quot;&gt;First steps&lt;/h2&gt;
+&lt;p&gt;Until few days ago, I’ve never used Go, I’d just read a lot of blog posts and some wiki page. I’ve read &lt;a href=&quot;http://golang.org/doc/install&quot;&gt;Getting Started&lt;/a&gt; (but I’ve used homebrew) and followed the first pages of &lt;a href=&quot;http://tour.golang.org/&quot;&gt;A Tour of Go&lt;/a&gt;, then I launched the editor to get my hands on. I premise that, during the years, I’ve used a lot of programming languages, so maybe I’m a bit biased, however Go looked very clean and familiar, especially if you’ve used C/C++.
+My first impressions were quite positive, Go has an awesome set of easy and portable tools: you install Go and you get all you need to work.&lt;/p&gt;
+
+&lt;h2 id=&quot;from-ruby-to-go&quot;&gt;From Ruby to Go&lt;/h2&gt;
+&lt;p&gt;I was wondering how much effort should be needed to write the same program from Ruby to Go. They are different for many reasons, so I was expecting a big gap in the lines of code and a steep learning curve. I was wrong, it only took 2 hours to get a working prototype, then I’ve dedicated some day trying to refine the code to reach a decent implementation. The final result took ~200/250 lines of code, it’s an excellent result, considering that Go is a &lt;em&gt;low level&lt;/em&gt; language, especially when compared to Ruby.&lt;/p&gt;
+
+&lt;h2 id=&quot;libraries-and-support&quot;&gt;Libraries and support&lt;/h2&gt;
+&lt;p&gt;I’ve found that Go has a lot of &lt;em&gt;packages&lt;/em&gt; bundled with its standard library (plus the ones provided by the community) and it was quite easy to find answers, most of them on the &lt;a href=&quot;https://groups.google.com/forum/?fromgroups#!forum/golang-nuts&quot;&gt;Go mail list&lt;/a&gt;) to solve problems related to some weirdness in code organization.
+At the beginning, I’ve used &lt;a href=&quot;http://golang.org/pkg/net/http/&quot;&gt;net/http&lt;/a&gt; package to write the web server part but, you know, nobody would use a so low level library for this task. So I chose &lt;a href=&quot;https://github.com/hoisie/web&quot;&gt;web.go&lt;/a&gt;, a micro web framework very similar to Sinatra and Cuba minimalistic approach. If you’re looking to something more MVC-like, you should look at &lt;a href=&quot;https://github.com/astaxie/beego&quot;&gt;beego&lt;/a&gt;, it has excellent features (eg: it handles JSON).&lt;/p&gt;
+
+&lt;h2 id=&quot;one-tool-to-rule-them-all&quot;&gt;One tool to rule them all&lt;/h2&gt;
+&lt;p&gt;I said that the Go toolchain is easy to use, the &lt;code&gt;go&lt;/code&gt; command, does almost everything:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;run a program (compiles it temporarily): &lt;code&gt;go run myfile.go&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;build (compile to a binary): &lt;code&gt;go build&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;test &lt;code&gt;go test&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;compile and install a remote package: &lt;code&gt;go get url.to/package_name&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’m almost sure there are other available commands, I’ve just listed the bare minimum ones. Moreover, the compiler warns you about syntax errors, unused packages and variables and the resulted binary is ready for use &lt;em&gt;as is&lt;/em&gt;. Isn’t it cool?&lt;/p&gt;
+
+&lt;h2 id=&quot;troubles&quot;&gt;Troubles?&lt;/h2&gt;
+&lt;p&gt;During this amazing jouney, the hardest problems where:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;File organization and namespaces: you can use subdirectories for namespacing, but they become internal &lt;em&gt;packages&lt;/em&gt; and you need to follow some rules and conventions to keep your app working. The only offical guideline is &lt;a href=&quot;http://golang.org/doc/code.html&quot;&gt;How to write Go code&lt;/a&gt;, but it offers a very basic overview on code organization.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Sometimes, you get &lt;em&gt;unclear errors&lt;/em&gt; from the compiler, most of them due to some access to null pointers or errors in language syntax (eg: using control stuctures outside a function block).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;I wasn’t able to write decent tests, I tried for a bit, then I’ve &lt;em&gt;delayed&lt;/em&gt; the idea for later. Maybe I need some more nowledge (and snippets) to get an idea. All I know, is that you need to put the file names with a &lt;code&gt;_test.go&lt;/code&gt; suffix inside the same directory.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As you can see, they’re trivial, perhaps caused from the fact that I’m a Go newbie :P&lt;/p&gt;
+
+&lt;h2 id=&quot;deploy&quot;&gt;Deploy&lt;/h2&gt;
+&lt;p&gt;Before deciding to pick Go, I’ve quickly investigated about deploying the app. I’ve found some article about deploying on heroku, so I’ve started to write my app without reading them. Again, I was wondering about the needed effort to deploy a Go app and, again, I was quite surprised. I’ve followed &lt;a href=&quot;http://mmcgrana.github.io/2012/09/getting-started-with-go-on-heroku.html&quot;&gt;this tutorial&lt;/a&gt; and everything worked flawlessy: heroku compiles your code to a binary, then runs it through Procfile. Almost the same would happen on a custom VPS box, once you have a working Go installation.&lt;/p&gt;
+
+&lt;h2 id=&quot;final-thoughts&quot;&gt;Final thoughts&lt;/h2&gt;
+&lt;p&gt;It was an awesome journey, Go is a very interesting language and I think it might be used for other projects. I’m planning to go further, trying to build some other pet project. As you can see, I didn’t mention about Go’s main strenghts (eg: concurrency), you can find thousands of articles and discussions about this. Instead, I focused on telling my story on &lt;em&gt;what happens when you try to learn Go and build a simple web app&lt;/em&gt;. A lot of people is adopting (or going to adopt) NodeJs for several (almost good) reasons, if you’re one of these, give Go a try ;-)&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Create recursive OpenStruct from a Ruby Hash</title>
+      <link>http://andreapavoni.com/blog/2013/4/create-recursive-openstruct-from-a-ruby-hash</link>
+      <pubDate>Wed, 24 Apr 2013 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2013/4/create-recursive-openstruct-from-a-ruby-hash</guid>
+      <description>&lt;p&gt;When I develop some ruby app, mostly rails ones, I need to manage several configuration variables (eg: API keys) and I like to store them in a unique place. So I usually end up with something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# config/initializers/_load_config.rb&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/config/config.yml&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;APP_CONF&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveSupport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;HashWithIndifferentAccess&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;YAML&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ERB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It does a good job:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;it first compiles eventual ERB tags (so you can store values in &lt;code&gt;ENV&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;then it loads YAML&lt;/li&gt;
+  &lt;li&gt;finally initializes a &lt;a href=&quot;http://apidock.com/rails/v3.2.13/ActiveSupport/HashWithIndifferentAccess/new/class&quot;&gt;HashWithIndifferentAccess&lt;/a&gt;, so I can lookup keys with either a String or a Symbol&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The last point is a &lt;em&gt;plus&lt;/em&gt;, kindly offered by Rails’ ActiveSupport library, I prefer Symbol over String for Hash keys.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;However, I knew that there’s a smarter way to achieve same goal, even with some more adavantages. I started from &lt;a href=&quot;http://www.ruby-doc.org/stdlib-2.0/libdoc/ostruct/rdoc/OpenStruct.html&quot;&gt;OpenStruct&lt;/a&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;it solves the problem of Hash key lookup by providing them as methods, for example:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;ostruct&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mystruct&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OpenStruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mystruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; 1&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mystruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; 2&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;it’s part of the Ruby’s standard library (along with YAML and ERB as well)&lt;/li&gt;
+  &lt;li&gt;it’s very simple to hack ;-)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Looks excellent, right? Well, it’s not &lt;em&gt;perfect&lt;/em&gt;, because it doesn’t handle nested hashes, in other words, here’s what happen when you pass an Hash that has other hashes as values:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;ostruct&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mystruct&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OpenStruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mystruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; {b: 1}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mystruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; NoMethodError: undefined method &amp;#39;b&amp;#39; for {:b=&amp;gt;1}:Hash&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Moreover, there’s no way to access the original hash (well, there’s one but that’s another point), it might be useful when you need to pass an entire Hash.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-solution&quot;&gt;A solution&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;OpenStruct&lt;/code&gt; already does a great part fo the &lt;em&gt;dirty job&lt;/em&gt;, it only needs some change to get what we need. I called it, &lt;code&gt;DeepStruct&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# deep_struct.rb&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;ostruct&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DeepStruct&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OpenStruct&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@table&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@hash_table&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;vi&quot;&gt;@table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_sym&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;is_a?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Hash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;vi&quot;&gt;@hash_table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_sym&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;new_ostruct_member&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_h&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@hash_table&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;There’s not too much to explain here, I’ve overridden &lt;a href=&quot;http://www.ruby-doc.org/stdlib-2.0/libdoc/ostruct/rdoc/OpenStruct.html#method-c-new&quot;&gt;OpenStruct#new&lt;/a&gt; method to make two basic things:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Iterate the key/values of the passed Hash, then:
+    &lt;ul&gt;
+      &lt;li&gt;initialize a new &lt;code&gt;DeepStruct&lt;/code&gt; if a given value is an Hash&lt;/li&gt;
+      &lt;li&gt;store original key/values in @hash_table, so I can retrieve it with &lt;code&gt;#to_h&lt;/code&gt; method&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That’s all we need, here’s an example:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;deep_struct&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mystruct&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DeepStruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mystruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; #&amp;lt;DeepStruct b=1&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mystruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; 1&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mystruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_h&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; {b: 1}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I’ve said I’d mainly use this to store configs for my apps, so go back to the initial example:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# config/initializers/_load_config.rb&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/config/config.yml&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;APP_CONF&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DeepStruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;YAML&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ERB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Enjoy and/or leave a comment :-)&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Rails4 StrongParameters with Devise and multiple resources</title>
+      <link>http://andreapavoni.com/blog/2013/3/rails4-strongparameters-with-devise-and-multiple-resources</link>
+      <pubDate>Wed, 27 Mar 2013 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2013/3/rails4-strongparameters-with-devise-and-multiple-resources</guid>
+      <description>&lt;p&gt;First of all, we override the controllers where we need to explicitly authorize params, in this case &lt;code&gt;PasswordsController&lt;/code&gt; and &lt;code&gt;RegistrationsController&lt;/code&gt; should accept &lt;code&gt;email&lt;/code&gt;, &lt;code&gt;password&lt;/code&gt; and &lt;code&gt;password_confirmation&lt;/code&gt; by default:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# app/controllers/custom_devise/password_controller.rb&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CustomDevise&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PasswordsController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Devise&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PasswordsController&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;resource_params&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resource_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:password_confirmation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:resource_params&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# app/controllers/custom_devise/registrations_controller.rb&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CustomDevise&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;RegistrationsController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Devise&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;RegistrationsController&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;resource_params&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resource_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:password_confirmation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:resource_params&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, we need to tell Devise to use these controllers instead of the default ones:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# config/routes.rb&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;devise_for&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;controllers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;registrations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;custom_devise/registrations&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;passwords&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;custom_devise/passwords&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;devise_for&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:admins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;controllers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;registrations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;custom_devise/registrations&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;passwords&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;custom_devise/passwords&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;enjoy :-)&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>jQuery custom plugin skeleton with CoffeeScript</title>
+      <link>http://andreapavoni.com/blog/2013/2/jquery-custom-plugin-skeleton-with-coffeescript</link>
+      <pubDate>Wed, 27 Feb 2013 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2013/2/jquery-custom-plugin-skeleton-with-coffeescript</guid>
+      <description>&lt;p&gt;This snippet might be used as a skeleton for simple jQuery plugins to be used inside your web apps:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffee&quot; data-lang=&quot;coffee&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# jQuery custom plugin skeleton with CoffeeScript&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MyPlugin&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;someMethod: &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(args) -&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# do something&lt;/span&gt;
+
+  &lt;span class=&quot;nv&quot;&gt;constructor: &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(element, params) -&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;@someMethod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;some_args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# do something&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# install in the window namespace&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;MyPlugin = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;MyPlugin&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# create jQuery plugin&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$.fn.myPlugin = &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(params) -&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MyPlugin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Usage:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# $(&amp;#39;#element&amp;#39;).myPlugin(params)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; also check discussions on this &lt;a href=&quot;https://gist.github.com/apeacox/5064928&quot;&gt;gist&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>3 weeks with a kindle</title>
+      <link>http://andreapavoni.com/blog/2012/4/3-weeks-with-a-kindle</link>
+      <pubDate>Tue, 17 Apr 2012 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2012/4/3-weeks-with-a-kindle</guid>
+      <description>&lt;aside class=&quot;left&quot;&gt;&lt;a href=&quot;http://instagr.am/p/Ib7sqEMhQO/&quot;&gt;&lt;img src=&quot;/images/3-weeks-with-a-kindle.jpg&quot; alt=&quot;my unpacked kindle&quot; /&gt;&lt;/a&gt;&lt;/aside&gt;
+
+&lt;p&gt;When I unpacked it, I was already impressed by its &lt;em&gt;frugal but elegant packaging&lt;/em&gt;, a sort of recycled cardboard, but the real surprise was about its protective foil: the &lt;em&gt;quick start&lt;/em&gt; istructions were showed up on display, not on the foil. This gave me a first taste of the kindle’s display capabilities.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-i-found-really-cool&quot;&gt;What I found really cool&lt;/h3&gt;
+&lt;p&gt;Just as a disclaimer, I’m speaking about &lt;em&gt;my thoughts&lt;/em&gt; on kindle, if you’re looking for a more detailed review, I think the web is full of articles on this topic, probably better than mine.&lt;/p&gt;
+
+&lt;h4 id=&quot;portability&quot;&gt;Portability&lt;/h4&gt;
+&lt;p&gt;It might look obvious, but for me it was a surprise. I’ve loaded some ebooks I already purchased on &lt;a href=&quot;http://pragprog.com&quot;&gt;my preferred bookstore&lt;/a&gt; and in few seconds I had a bookshelf in my hands. This is very useful when I want to select a book based on my mood or need in a particular moment of the day (after lunch, during relax, at the toilet…).&lt;/p&gt;
+
+&lt;h4 id=&quot;money-saving&quot;&gt;Money saving&lt;/h4&gt;
+&lt;p&gt;You know, I’m a passionate developer. This means that I’m always in a &lt;em&gt;learn new stuff&lt;/em&gt; mode, I buy a lot of books on various arguments (mostly on programming, productivity, etc). Buying paper books means long waitings (from 2 up to 15 working days) and higher prices (yes, shipping and paper have a cost). Now I can purchase an ebook, saving around 40-50% of costs and 100% of time, because they can be sent to my kindle in a matter of seconds (throught a WiFi connection).&lt;/p&gt;
+
+&lt;h4 id=&quot;reading-at-the-maximum-speed&quot;&gt;Reading at the maximum speed&lt;/h4&gt;
+&lt;p&gt;Believe it or not, in three weeks I studied three ebooks and a half, dedicating from 5 minutes to 1 hour for each session. I only know that I’ve never reached these results with a paper book. But there’s more. Another cool kindle’s feature (perhaps of any other ebook reader) is the ability to highlight text and to add annotations. These are directly accessible from the kindle’s &lt;em&gt;main page&lt;/em&gt;, so you can get a fast look on the important things.&lt;/p&gt;
+
+&lt;h3 id=&quot;yes-you-can-read-pdfs-but&quot;&gt;Yes, you can read PDFs, but…&lt;/h3&gt;
+&lt;p&gt;Another frequently asked question is about PDF support: it just works, but without some features, like links in the Table of Contents. I also tried &lt;a href=&quot;http://calibre-ebook.com/&quot;&gt;calibre&lt;/a&gt;: it is an excellent tool to manage your virtual bookshelf, it’s also able to &lt;em&gt;convert&lt;/em&gt; an ebook to other formats (like PDF -&amp;gt; mobi). However, when I try some conversion, I’ve noted a lot of flaws:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;there are links in Table Of Contents, but they don’t work&lt;/li&gt;
+  &lt;li&gt;code snippets (or similar pieces of text) are &lt;em&gt;ugly&lt;/em&gt; (no indentation, crappy fonts, etc…)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;From my point of view, it’s totally useless. Maybe it’s ok for articles and novels, not to study technical books.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h3&gt;
+&lt;p&gt;Well, there isn’t a real conclusion :P I’m happy with my kindle, I enjoy its &lt;em&gt;advantages&lt;/em&gt; (at least for my niche case) and I tried to show you my experience with it. I hope you’ll find useful  hints in case you’re undecided ;)&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Using one carrierwave image uploader with different sizes on several models</title>
+      <link>http://andreapavoni.com/blog/2012/3/using-one-carrierwave-image-uploader-with-different-sizes-on-several-models</link>
+      <pubDate>Mon, 19 Mar 2012 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2012/3/using-one-carrierwave-image-uploader-with-different-sizes-on-several-models</guid>
+      <description>&lt;p&gt;First of all, a typical use case:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;2 or more models with some image to upload, each model needs different image sizes. For example, you might need images for user’s avatar, photo galleries and/or screenshots.&lt;/li&gt;
+  &lt;li&gt;using the awesome &lt;a href=&quot;https://github.com/jnicklas/carrierwave&quot;&gt;carrierwave&lt;/a&gt; gem&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;em&gt;common&lt;/em&gt; solution is to have several &lt;em&gt;image uploaders&lt;/em&gt;, often with fancy names to distinguish them. I didn’t like this approach, so why don’t use some metaprogramming? ;-)&lt;/p&gt;
+
+&lt;p&gt;I’ve used this solution on a commercial project with enough satisfaction, the mayor advantages are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;DRY code: it doesn’t make sense to have several &lt;em&gt;image uploaders&lt;/em&gt; just because you need different sizes on each model&lt;/li&gt;
+  &lt;li&gt;embrace conventions: you pick some decent &lt;em&gt;version names&lt;/em&gt; (eg. &lt;em&gt;thumb&lt;/em&gt;, &lt;em&gt;mini&lt;/em&gt;, &lt;em&gt;main&lt;/em&gt;, and so on) and reuse them contextually to the model.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To get an instant picture of what we’re going to achieve, here’s the custom &lt;code&gt;ImageUploader&lt;/code&gt;, I’ve removed some autogenerated code, you should already know how to use it. Check the comments inside it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ImageUploader&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;CarrierWave&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Uploader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# use mini_magic gem for image processing&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;CarrierWave&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;MiniMagick&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# call setup_available_size method before cache image&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;before&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:setup_available_sizes&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;store_dir&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;default_url&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# we process images with a custom method (read above)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;process&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:dynamic_resize_to_fit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:default&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# default processing, we assume that each model has a &amp;quot;mini&amp;quot; version&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:mini&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;process&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:dynamic_resize_to_fit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:mini&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# conditional processing: we process &amp;quot;thumb&amp;quot; version only if it was defined in model&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:thumb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:has_thumb_size?&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;process&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:dynamic_resize_to_fit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:thumb&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;extension_white_list&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sanitize_regexp&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# a lame wrapper to resize_to_fit method&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dynamic_resize_to_fit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;resize_to_fit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;IMAGE_SIZES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# here&amp;#39;s the metaprogramming magic!&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# we check if the called method matches &amp;quot;has_VERSION_size?&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# VERSION is a version name for image size&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;method_missing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# we&amp;#39;ve already defined &amp;quot;has_VERSION_size?&amp;quot;, so if a method with&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# similar name is missed, it should return false&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/has_(.*)_size\?/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;kp&quot;&gt;protected&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# the method called at the start&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# it checks for &amp;lt;model&amp;gt;::IMAGE_SIZES hash and define a custom method &amp;quot;has_VERSION_size?&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# (more on this later in the article)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setup_available_sizes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;IMAGE_SIZES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class_eval&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;define_method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;has_&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;_size?&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_sym&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And now, some models, each with the same &lt;code&gt;ImageUploader&lt;/code&gt; and a &lt;code&gt;IMAGE_SIZES&lt;/code&gt; Hash containing same keys, but different image sizes:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# app/models/photo.rb&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Photo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# custom image sizes: each key is a version name&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;IMAGE_SIZES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;:default&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1280&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1280&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;:mini&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;900&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;:thumb&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;mount_uploader&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ImageUploader&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# app/models/product.rb&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Product&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# other images sizes: same keys, different sizes&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;IMAGE_SIZES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;:default&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;700&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;700&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;:mini&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;:thumb&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;mount_uploader&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ImageUploader&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see, the key part relies on three methods:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;setup_available_sizes&lt;/code&gt;: it defines some helper methods, according to the versions that where specified in models. That’s why it gets called before processing and storage of the uploaded file. Did you notice that this method accepts a &lt;em&gt;file&lt;/em&gt; argument? It’s not a typo, but it’s because Carrierwave always passes that object to its callbacks (check the code &lt;a href=&quot;https://github.com/jnicklas/carrierwave/blob/master/lib/carrierwave/uploader/cache.rb#L112&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;https://github.com/jnicklas/carrierwave/blob/master/lib/carrierwave/uploader/callbacks.rb#L15&quot;&gt;here&lt;/a&gt;, it’s &lt;a href=&quot;https://github.com/jnicklas/carrierwave/wiki/How-to%3A-use-callbacks&quot;&gt;not documented&lt;/a&gt;). If you try to omit it, you’ll get a &lt;code&gt;ArgumentError&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;method_missing&lt;/code&gt;: it doesn’t need too much explanation (or go to read &lt;a href=&quot;http://pragprog.com/book/ppmetr/metaprogramming-ruby&quot;&gt;this book&lt;/a&gt;, now!), it should be enough to know that in this case, we use it to check if a given model, has defined a particular version (through the &lt;code&gt;setup_available_sizes&lt;/code&gt; method we’ve seen above). In fact, &lt;code&gt;method_missing&lt;/code&gt; is called &lt;em&gt;if and only if&lt;/em&gt; there isn’t a &lt;code&gt;has_VERSION_size?&lt;/code&gt; defined. That’s why it returns &lt;em&gt;false&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;dynamic_resize_to_fit&lt;/code&gt;: this is a simple wrapper to the carrierwave’s &lt;code&gt;resize_to_fit&lt;/code&gt; method. Instead of passing &lt;em&gt;width&lt;/em&gt; and &lt;em&gt;height&lt;/em&gt; values, we pass a &lt;em&gt;version name&lt;/em&gt;, so it can lookup the relative sizes from the model. To be honest, this approach is quite lame, because you can use some more &lt;em&gt;motaprogramming fu&lt;/em&gt; to dynamically wrap carrierwave’s &lt;a href=&quot;https://github.com/jnicklas/carrierwave/blob/master/lib/carrierwave/processing/mini_magick.rb&quot;&gt;processor methods&lt;/a&gt;. Now you have a decent excuse to play with something after you’ve finished to read ;-)&lt;/p&gt;
+
+&lt;p&gt;That’s all, folks!&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>A new blog, more fun</title>
+      <link>http://andreapavoni.com/blog/2012/3/a-new-blog-more-fun</link>
+      <pubDate>Tue, 13 Mar 2012 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2012/3/a-new-blog-more-fun</guid>
+      <description>&lt;h4 id=&quot;a-bit-of-history&quot;&gt;A bit of history&lt;/h4&gt;
+
+&lt;p&gt;Until today, I’ve used &lt;a href=&quot;http://tumblr.com&quot;&gt;tumblr&lt;/a&gt; for blogging, however I wasn’t too much happy with it, I don’t use all that features (photos, links, and so on), instead I need some more &lt;em&gt;power&lt;/em&gt; when writing tech articles. That’s also why I didn’t write too much: every time I got some useful thing to say, I didn’t want to go on tumblr.&lt;/p&gt;
+
+&lt;p&gt;After some thought, I decided to write my own blog engine, it was a decent excuse to play with &lt;em&gt;cool toys&lt;/em&gt;. Then, a month ago I purchased a VPS on &lt;a href=&quot;http://linode.com&quot;&gt;Linode&lt;/a&gt; and started playing with (well known) tools and solutions that I’ve never used, such as &lt;a href=&quot;http://archlinux.org&quot;&gt;Arch linux&lt;/a&gt;, &lt;a href=&quot;https://github.com/defunkt/unicorn&quot;&gt;unicorn&lt;/a&gt; and &lt;a href=&quot;http://mmonit.com/monit/&quot;&gt;monit&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I’ve also imported some article from my &lt;a href=&quot;http://andreapavoni.tumblr.com&quot;&gt;previous blog&lt;/a&gt;, as you can see, they were very rare, expect some more writings in the near future ;-)&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Store Rails views on database</title>
+      <link>http://andreapavoni.com/blog/2011/6/store-rails-views-on-database</link>
+      <pubDate>Sun, 12 Jun 2011 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2011/6/store-rails-views-on-database</guid>
+      <description>&lt;p&gt;The ideal way is to store views on a database, indeed there are some CMSs that solve this problem with similar approaches, like &lt;a href=&quot;http://radiantcms.org/&quot;&gt;Radiant&lt;/a&gt; and &lt;a href=&quot;http://www.locomotivecms.com/&quot;&gt;Locomotive&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, I wanted something that let me to reuse this feature on several projects (because a custom CMS may have different features), and to store only certain views, according to specific content and needs.&lt;/p&gt;
+
+&lt;p&gt;So, I’ve developed &lt;a href=&quot;https://github.com/apeacox/panoramic&quot;&gt;Panoramic&lt;/a&gt;, a simple gem inspired from some ideas found in José Valim’s excellent book &lt;a href=&quot;http://pragprog.com/titles/jvrails/crafting-rails-applications&quot;&gt;Crafting Rails Applications&lt;/a&gt;. Simply put, once Panoramic is installed, you can store your views on database. It works through an implemetation of &lt;code&gt;ActionView::Resolver&lt;/code&gt; class: Rails will lookup views as if they were on filesystem. In controller, you’ll tell where and when to use those views, using &lt;code&gt;prepend_view_path&lt;/code&gt; and &lt;code&gt;append_view_path&lt;/code&gt; on a controller or action basis (they are both implemented as class and instance methods). Depending from the method you’ll use, Rails will respectively look for views on database, then it will fallback on filesystem, or viceversa. Quite easy, right?&lt;/p&gt;
+
+&lt;p&gt;I’ll not show any code here, because there’s a full explanation on &lt;a href=&quot;https://github.com/apeacox/panoramic/blob/master/README.md&quot;&gt;Panoramic’s README&lt;/a&gt;. As a final note, at the moment it works only with ActiveRecord, but I’ve planned to extend support to DataMapper and Mongoid as soon as possible. It’s very easy to implement, the main problem is about testing: maybe I’ll write some rspec’s custom matchers to reuse with different ORMs, like &lt;a href=&quot;https://github.com/jnicklas/carrierwave&quot;&gt;carrierwave&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;notes&quot;&gt;Notes:&lt;/h4&gt;
+&lt;p&gt;This article was initially published on &lt;a href=&quot;http://blog.andreapavoni.com/post/6488774753/store-rails-views-on-database&quot;&gt;http://blog.andreapavoni.com/post/6488774753/store-rails-views-on-database&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Rails 3: An improved agnostic search model using Arel</title>
+      <link>http://andreapavoni.com/blog/2010/7/rails-3-an-improved-agnostic-search-model-using-arel</link>
+      <pubDate>Mon, 05 Jul 2010 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2010/7/rails-3-an-improved-agnostic-search-model-using-arel</guid>
+      <description>
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Search&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;attr_accessor&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:attributes&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;attrs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{})&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@attributes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@arel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arel_table&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;field&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;pattr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;field&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;
+
+      &lt;span class=&quot;n&quot;&gt;attrs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Hash&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attrs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;searchable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attrs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pattr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nil?&lt;/span&gt;
+
+      &lt;span class=&quot;vi&quot;&gt;@attributes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pattr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_sym&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;attrs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pattr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;searchable&lt;/span&gt;
+
+      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:define_method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;field&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cond&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;kp&quot;&gt;attr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;field&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_sym&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;first&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@attributes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;attr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;
+        &lt;span class=&quot;vi&quot;&gt;@model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@arel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;attr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cond&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;searchable&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;block_given?&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;result&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@model&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The constructor takes the model you want to search in, and an hash of params to use, they’ll be the request params when used from controller. Note that if some param value is an empty string, it will be ignored: this lets the visitor to leave blank some fields in the search form and make it conditional.&lt;/p&gt;
+
+&lt;p&gt;To save typings, when specifying conditions, you can omit the value, because it’s taken from the params hash. By the way, if you need some more control, you can specify another value. Finally, you can pass a block to make it easier to read. Here’s a real usage example from a controller:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RealtyRequestController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#... other actions ...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;search&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;RealtyRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# value to search defaults to params[:search][:contract_id]&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;contract_id&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:eq&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;price_max&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:lteq&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# same here&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;price_min&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:gteq&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zone&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:matches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;%&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:zone&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%&amp;quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# here I look for &amp;#39;%param%&amp;#39;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;province&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:matches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;%&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:province&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%&amp;quot;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;municipality&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:matches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;%&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:municipality&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%&amp;quot;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rooms&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:eq&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mq&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:eq&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+    &lt;span class=&quot;vi&quot;&gt;@realty_requests&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# assign result&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@realty_requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:created_at&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# add order option&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# ... other rendering stuff ...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When &lt;code&gt;Search#result&lt;/code&gt; is called a model instance is returned, it can still be ordered. According to &lt;a href=&quot;http://github.com/rails/arel#readme&quot;&gt;Arel’s README&lt;/a&gt;, there’s no support for &lt;em&gt;OR&lt;/em&gt; conditions yet, I hope it will be included soon.&lt;/p&gt;
+
+&lt;h4 id=&quot;notes&quot;&gt;Notes:&lt;/h4&gt;
+&lt;p&gt;This article was initially published on &lt;a href=&quot;http://blog.andreapavoni.com/post/776670218/rails-3-an-improved-agnostic-search-model-using-arel&quot;&gt;http://blog.andreapavoni.com/post/776670218/rails-3-an-improved-agnostic-search-model-using-arel&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Rails3: using Arel to make conditional searches based on conditional params</title>
+      <link>http://andreapavoni.com/blog/2010/6/rails3-using-arel-to-make-conditional-searches-based-on-conditional-params</link>
+      <pubDate>Wed, 30 Jun 2010 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://andreapavoni.com/blog/2010/6/rails3-using-arel-to-make-conditional-searches-based-on-conditional-params</guid>
+      <description>&lt;p&gt;I wrote a basic model called Search, I can re-use it for other models that need search features:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# put this in app/models/search.rb&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Search&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;attr_accessor&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:attributes&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attributes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{})&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@attributes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;attributes&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@attributes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:define_method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then I wrote a partial form with params, the following code is only an example, I have more fields:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-erb&quot; data-lang=&quot;erb&quot;&gt;&lt;span class=&quot;x&quot;&gt;&amp;lt;div id=&amp;quot;searchform&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;form_tag&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;search_people_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:method&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;get&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;lt;div class=&amp;quot;field&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;      &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:firstname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Firstname&amp;#39;&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&amp;lt;br/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;      &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text_field&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:firstname&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;lt;div class=&amp;quot;field&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;      &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:lastname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Lastname&amp;#39;&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&amp;lt;br/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;      &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text_field&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:lastname&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;submit_tag&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Search&amp;quot;&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally the controller action called ‘search’. As you can see, the difficult part was that you don’t know which params are passed by the request, so you need to specify conditions only if they are present. Arel helped to resolve this problem:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PeopleController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# ... other CRUD actions ...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;search&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arel_table&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# initialize Arel table&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@people&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:created_at&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# start with a simple option&lt;/span&gt;
+
+    &lt;span class=&quot;vi&quot;&gt;@search&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# initialize Search model with the search params&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# apply conditions only if they are present&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@people&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@people&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:lastname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;%&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lastname&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lastname&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@people&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@people&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:firstname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;%&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;firstname&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;firstname&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:index&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# render index action, it&amp;#39;s the same output, just filtered by conditions passed&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Probably it’s not the best solution, perhaps this could be optimized with some helper, but it works, and helps to figure out how Arel works.&lt;/p&gt;
+
+&lt;h4 id=&quot;webografy&quot;&gt;Webografy:&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.slideshare.net/GreggPollack/rails-3-beautiful-code-3219240&quot;&gt;Greg Pollack: Rails 3 Beautiful Code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://railscasts.com/episodes/215-advanced-queries-in-rails-3&quot;&gt;Ryan Bates: Advanced Queries in Rails 3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;notes&quot;&gt;Notes:&lt;/h4&gt;
+&lt;p&gt;This article was initially published on &lt;a href=&quot;http://blog.andreapavoni.com/post/758178172/rails3-using-arel-to-make-conditional-searches-based&quot;&gt;http://blog.andreapavoni.com/post/758178172/rails3-using-arel-to-make-conditional-searches-based&lt;/a&gt;&lt;/p&gt;
+
+</description>
+    </item>
+    
+    
+
+  </channel> 
+</rss>

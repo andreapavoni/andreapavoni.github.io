@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello Go lang! - Andrea Pavoni</title>
+
+    <meta charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/application.css">
+    <link rel="canonical" href="http://andreapavoni.com/blog/2013/5/hello-go-lang" />
+
+    <meta name="google-site-verification" content="4kYa-0E2vIOPdWtJsz0BISFUuNoswW-SyiDRvezrXmQ" />
+
+    <meta name="author" content="Andrea Pavoni">
+    <meta name="language" content="en">
+    <meta name="description" content="During the last months, I was looking for a new programming language to learn for *fun and profit*. I picked [Go lang](http://golang.org), then I tried to build something enough complete and/or useful, to see how it feels to program in Go with an everyday task. Here's how it went."/>
+    <meta name="keywords" content="andrea,pavoni,andrea pavoni,programmer,developer,rome,italy,ruby,javascript,go,golang,redis,oop,tdd,bdd,unix,open source,node,nodejs" />
+
+    <meta property="fb:admins" content="1309293135" />
+    <meta property="og:title" content="Hello Go lang! - Andrea Pavoni" />
+    <meta property="og:url" content="http://andreapavoni.com/blog/2013/5/hello-go-lang" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png" />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:site" content="@apeacox" />
+    <meta property="twitter:title" content="Hello Go lang! - Andrea Pavoni" />
+    <meta property="twitter:description" content="During the last months, I was looking for a new programming language to learn for *fun and profit*. I picked [Go lang](http://golang.org), then I tried to build something enough complete and/or useful, to see how it feels to program in Go with an everyday task. Here's how it went." />
+    <meta property="twitter:image" content="http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png" />
+    <meta property="twitter:url" content="http://andreapavoni.com/blog/2013/5/hello-go-lang" />
+
+  </head>
+  <body>
+    <aside class="cover">
+      <div class="inner">
+        <div class="avatar">
+          <img src='http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png?s=150' alt='Andrea Pavoni image' />
+        </div>
+        <h1 class="title"><a href="http://andreapavoni.com">Andrea Pavoni</a></h1>
+        <p class="description">
+          Passionate programmer. *nix user since 1999. Husband/Father. Teacher.
+        </p>
+        <p class="description">Developer</p>
+        <ul class="contacts">
+          <li><a href="http://github.com/apeacox/" class="fa fa-github fa-lg" title="github"></a></li>
+          <li><a href="http://twitter.com/apeacox/" class="fa fa-twitter fa-lg" title="twitter"></a></li>
+          <li><a href="http://it.linkedin.com/in/andreapavoni/" class="fa fa-linkedin fa-lg" title="LinkedIn"></a></li>
+          <li><a href="https://plus.google.com/+AndreaPavoni?rel=author" class="fa fa-google-plus fa-lg" title="Google+"></a></li>
+          <li><a href="http://www.facebook.com/apavoni" class="fa fa-facebook fa-lg" title="facebook"></a></li>
+          <li><a href="http://instagram.com/apavoni" class="fa fa-instagram fa-lg" title="instagram"></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section class="wrapper">
+      <div class="wrapper-inner">
+        <article class="post">
+  <header>
+    <p class="meta">03 May 2013</p>
+    <h1 class="title"><a href="/blog/2013/5/hello-go-lang">Hello Go lang!</a></h2>
+  </header>
+
+  <div class="content">
+    
+
+    <h2 id="tldr">TL;DR</h2>
+<p>I decided to try Go and I developed a simple web app. There’s a <a href="http://goshort.herokuapp.com">working demo on heroku</a> and source code is available on <a href="https://github.com/apeacox/goshort">github</a>. It was an awesome journey and I’m planning to go further.</p>
+
+<h2 id="beyond-hello-world">Beyond Hello World</h2>
+<p>You know, when you learn a new programming language, <em>Hello World</em> is not enough, you always need some known problem to solve, but <em>known problem</em> doesn’t mean a boring non-practical algorithm. I decided to port <a href="https://github.com/apeacox/avarus">avarus</a>, a simple Url shortener built with <a href="http://cuba.is">Cuba</a> ruby microframework and <a href="http://redis.io">Redis</a>. It is a web application, it uses a database and it took a very low amount of code (~150/200 loc). So it’s a good candidate to port in Go.</p>
+
+<h2 id="first-steps">First steps</h2>
+<p>Until few days ago, I’ve never used Go, I’d just read a lot of blog posts and some wiki page. I’ve read <a href="http://golang.org/doc/install">Getting Started</a> (but I’ve used homebrew) and followed the first pages of <a href="http://tour.golang.org/">A Tour of Go</a>, then I launched the editor to get my hands on. I premise that, during the years, I’ve used a lot of programming languages, so maybe I’m a bit biased, however Go looked very clean and familiar, especially if you’ve used C/C++.
+My first impressions were quite positive, Go has an awesome set of easy and portable tools: you install Go and you get all you need to work.</p>
+
+<h2 id="from-ruby-to-go">From Ruby to Go</h2>
+<p>I was wondering how much effort should be needed to write the same program from Ruby to Go. They are different for many reasons, so I was expecting a big gap in the lines of code and a steep learning curve. I was wrong, it only took 2 hours to get a working prototype, then I’ve dedicated some day trying to refine the code to reach a decent implementation. The final result took ~200/250 lines of code, it’s an excellent result, considering that Go is a <em>low level</em> language, especially when compared to Ruby.</p>
+
+<h2 id="libraries-and-support">Libraries and support</h2>
+<p>I’ve found that Go has a lot of <em>packages</em> bundled with its standard library (plus the ones provided by the community) and it was quite easy to find answers, most of them on the <a href="https://groups.google.com/forum/?fromgroups#!forum/golang-nuts">Go mail list</a>) to solve problems related to some weirdness in code organization.
+At the beginning, I’ve used <a href="http://golang.org/pkg/net/http/">net/http</a> package to write the web server part but, you know, nobody would use a so low level library for this task. So I chose <a href="https://github.com/hoisie/web">web.go</a>, a micro web framework very similar to Sinatra and Cuba minimalistic approach. If you’re looking to something more MVC-like, you should look at <a href="https://github.com/astaxie/beego">beego</a>, it has excellent features (eg: it handles JSON).</p>
+
+<h2 id="one-tool-to-rule-them-all">One tool to rule them all</h2>
+<p>I said that the Go toolchain is easy to use, the <code>go</code> command, does almost everything:</p>
+
+<ul>
+  <li>run a program (compiles it temporarily): <code>go run myfile.go</code></li>
+  <li>build (compile to a binary): <code>go build</code></li>
+  <li>test <code>go test</code></li>
+  <li>compile and install a remote package: <code>go get url.to/package_name</code></li>
+</ul>
+
+<p>I’m almost sure there are other available commands, I’ve just listed the bare minimum ones. Moreover, the compiler warns you about syntax errors, unused packages and variables and the resulted binary is ready for use <em>as is</em>. Isn’t it cool?</p>
+
+<h2 id="troubles">Troubles?</h2>
+<p>During this amazing jouney, the hardest problems where:</p>
+
+<ul>
+  <li>
+    <p>File organization and namespaces: you can use subdirectories for namespacing, but they become internal <em>packages</em> and you need to follow some rules and conventions to keep your app working. The only offical guideline is <a href="http://golang.org/doc/code.html">How to write Go code</a>, but it offers a very basic overview on code organization.</p>
+  </li>
+  <li>
+    <p>Sometimes, you get <em>unclear errors</em> from the compiler, most of them due to some access to null pointers or errors in language syntax (eg: using control stuctures outside a function block).</p>
+  </li>
+  <li>
+    <p>I wasn’t able to write decent tests, I tried for a bit, then I’ve <em>delayed</em> the idea for later. Maybe I need some more nowledge (and snippets) to get an idea. All I know, is that you need to put the file names with a <code>_test.go</code> suffix inside the same directory.</p>
+  </li>
+</ul>
+
+<p>As you can see, they’re trivial, perhaps caused from the fact that I’m a Go newbie :P</p>
+
+<h2 id="deploy">Deploy</h2>
+<p>Before deciding to pick Go, I’ve quickly investigated about deploying the app. I’ve found some article about deploying on heroku, so I’ve started to write my app without reading them. Again, I was wondering about the needed effort to deploy a Go app and, again, I was quite surprised. I’ve followed <a href="http://mmcgrana.github.io/2012/09/getting-started-with-go-on-heroku.html">this tutorial</a> and everything worked flawlessy: heroku compiles your code to a binary, then runs it through Procfile. Almost the same would happen on a custom VPS box, once you have a working Go installation.</p>
+
+<h2 id="final-thoughts">Final thoughts</h2>
+<p>It was an awesome journey, Go is a very interesting language and I think it might be used for other projects. I’m planning to go further, trying to build some other pet project. As you can see, I didn’t mention about Go’s main strenghts (eg: concurrency), you can find thousands of articles and discussions about this. Instead, I focused on telling my story on <em>what happens when you try to learn Go and build a simple web app</em>. A lot of people is adopting (or going to adopt) NodeJs for several (almost good) reasons, if you’re one of these, give Go a try ;-)</p>
+
+  </div>
+
+  <footer>
+    <h3 class='title'>Enjoyed this article? Share it!</h3>
+
+    <!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+      <a class="addthis_button_twitter"><i class='fa fa-twitter-square fa-2x'></i></a>
+      <a class="addthis_button_linkedin"><i class='fa fa-linkedin-square fa-2x'></i></a>
+      <a class="addthis_button_google_plusone_share"><i class='fa fa-google-plus-square fa-2x'></i></a>
+      <a class="addthis_button_facebook"><i class='fa fa-facebook-square fa-2x'></i></a>
+    </div>
+    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5359113314750bd5"></script>
+    <!-- AddThis Button END -->
+  </footer>
+
+  <div id="disqus_thread">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'apeacox';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+
+  </div>
+</article>
+
+      </div>
+
+      <footer class="wrapper-footer">
+        <p>made with <span class='heartbeat'>♥</span> by <a href='http://andreapavoni.com'>Andrea Pavoni</a> &copy;2010 - 2016
+          <a href="//www.iubenda.com/privacy-policy/207223" class="iubenda-white iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+          <script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src = "//cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
+        </p>
+      </footer>
+    </section>
+
+    <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9419221-5']);
+  _gaq.push(['_trackPageview']);
+  _gaq.push (['_gat._anonymizeIp']);
+
+  (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+   })();
+</script>
+
+  </body>
+</html>

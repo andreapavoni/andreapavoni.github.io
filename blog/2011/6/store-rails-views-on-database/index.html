@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Store Rails views on database - Andrea Pavoni</title>
+
+    <meta charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/application.css">
+    <link rel="canonical" href="http://andreapavoni.com/blog/2011/6/store-rails-views-on-database" />
+
+    <meta name="google-site-verification" content="4kYa-0E2vIOPdWtJsz0BISFUuNoswW-SyiDRvezrXmQ" />
+
+    <meta name="author" content="Andrea Pavoni">
+    <meta name="language" content="en">
+    <meta name="description" content="When it comes to develop a CMS, one of the main problems concerns where or how to store and organize views (templates, partials, layouts) for particular needs like different layouts for specific pages, (sub)domains or multi-languages."/>
+    <meta name="keywords" content="andrea,pavoni,andrea pavoni,programmer,developer,rome,italy,ruby,javascript,go,golang,redis,oop,tdd,bdd,unix,open source,node,nodejs" />
+
+    <meta property="fb:admins" content="1309293135" />
+    <meta property="og:title" content="Store Rails views on database - Andrea Pavoni" />
+    <meta property="og:url" content="http://andreapavoni.com/blog/2011/6/store-rails-views-on-database" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png" />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:site" content="@apeacox" />
+    <meta property="twitter:title" content="Store Rails views on database - Andrea Pavoni" />
+    <meta property="twitter:description" content="When it comes to develop a CMS, one of the main problems concerns where or how to store and organize views (templates, partials, layouts) for particular needs like different layouts for specific pages, (sub)domains or multi-languages." />
+    <meta property="twitter:image" content="http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png" />
+    <meta property="twitter:url" content="http://andreapavoni.com/blog/2011/6/store-rails-views-on-database" />
+
+  </head>
+  <body>
+    <aside class="cover">
+      <div class="inner">
+        <div class="avatar">
+          <img src='http://www.gravatar.com/avatar/c96743368f88cd325e8ae414d267dbaa.png?s=150' alt='Andrea Pavoni image' />
+        </div>
+        <h1 class="title"><a href="http://andreapavoni.com">Andrea Pavoni</a></h1>
+        <p class="description">
+          Passionate programmer. *nix user since 1999. Husband/Father. Teacher.
+        </p>
+        <p class="description">Developer</p>
+        <ul class="contacts">
+          <li><a href="http://github.com/apeacox/" class="fa fa-github fa-lg" title="github"></a></li>
+          <li><a href="http://twitter.com/apeacox/" class="fa fa-twitter fa-lg" title="twitter"></a></li>
+          <li><a href="http://it.linkedin.com/in/andreapavoni/" class="fa fa-linkedin fa-lg" title="LinkedIn"></a></li>
+          <li><a href="https://plus.google.com/+AndreaPavoni?rel=author" class="fa fa-google-plus fa-lg" title="Google+"></a></li>
+          <li><a href="http://www.facebook.com/apavoni" class="fa fa-facebook fa-lg" title="facebook"></a></li>
+          <li><a href="http://instagram.com/apavoni" class="fa fa-instagram fa-lg" title="instagram"></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section class="wrapper">
+      <div class="wrapper-inner">
+        <article class="post">
+  <header>
+    <p class="meta">12 Jun 2011</p>
+    <h1 class="title"><a href="/blog/2011/6/store-rails-views-on-database">Store Rails views on database</a></h2>
+  </header>
+
+  <div class="content">
+    
+
+    <p>The ideal way is to store views on a database, indeed there are some CMSs that solve this problem with similar approaches, like <a href="http://radiantcms.org/">Radiant</a> and <a href="http://www.locomotivecms.com/">Locomotive</a>.</p>
+
+<p>However, I wanted something that let me to reuse this feature on several projects (because a custom CMS may have different features), and to store only certain views, according to specific content and needs.</p>
+
+<p>So, I’ve developed <a href="https://github.com/apeacox/panoramic">Panoramic</a>, a simple gem inspired from some ideas found in José Valim’s excellent book <a href="http://pragprog.com/titles/jvrails/crafting-rails-applications">Crafting Rails Applications</a>. Simply put, once Panoramic is installed, you can store your views on database. It works through an implemetation of <code>ActionView::Resolver</code> class: Rails will lookup views as if they were on filesystem. In controller, you’ll tell where and when to use those views, using <code>prepend_view_path</code> and <code>append_view_path</code> on a controller or action basis (they are both implemented as class and instance methods). Depending from the method you’ll use, Rails will respectively look for views on database, then it will fallback on filesystem, or viceversa. Quite easy, right?</p>
+
+<p>I’ll not show any code here, because there’s a full explanation on <a href="https://github.com/apeacox/panoramic/blob/master/README.md">Panoramic’s README</a>. As a final note, at the moment it works only with ActiveRecord, but I’ve planned to extend support to DataMapper and Mongoid as soon as possible. It’s very easy to implement, the main problem is about testing: maybe I’ll write some rspec’s custom matchers to reuse with different ORMs, like <a href="https://github.com/jnicklas/carrierwave">carrierwave</a>.</p>
+
+<h4 id="notes">Notes:</h4>
+<p>This article was initially published on <a href="http://blog.andreapavoni.com/post/6488774753/store-rails-views-on-database">http://blog.andreapavoni.com/post/6488774753/store-rails-views-on-database</a></p>
+
+  </div>
+
+  <footer>
+    <h3 class='title'>Enjoyed this article? Share it!</h3>
+
+    <!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+      <a class="addthis_button_twitter"><i class='fa fa-twitter-square fa-2x'></i></a>
+      <a class="addthis_button_linkedin"><i class='fa fa-linkedin-square fa-2x'></i></a>
+      <a class="addthis_button_google_plusone_share"><i class='fa fa-google-plus-square fa-2x'></i></a>
+      <a class="addthis_button_facebook"><i class='fa fa-facebook-square fa-2x'></i></a>
+    </div>
+    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5359113314750bd5"></script>
+    <!-- AddThis Button END -->
+  </footer>
+
+  <div id="disqus_thread">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'apeacox';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+
+  </div>
+</article>
+
+      </div>
+
+      <footer class="wrapper-footer">
+        <p>made with <span class='heartbeat'>♥</span> by <a href='http://andreapavoni.com'>Andrea Pavoni</a> &copy;2010 - 2016
+          <a href="//www.iubenda.com/privacy-policy/207223" class="iubenda-white iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+          <script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src = "//cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
+        </p>
+      </footer>
+    </section>
+
+    <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9419221-5']);
+  _gaq.push(['_trackPageview']);
+  _gaq.push (['_gat._anonymizeIp']);
+
+  (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+   })();
+</script>
+
+  </body>
+</html>
